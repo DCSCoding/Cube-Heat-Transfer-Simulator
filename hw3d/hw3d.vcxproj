@@ -212,6 +212,7 @@
     <ClInclude Include="Pyramid.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Sphere.h" />
+    <ClInclude Include="ThermoSim.h" />
     <ClInclude Include="Topology.h" />
     <ClInclude Include="TransformCbuf.h" />
     <ClInclude Include="VacuumCube.h" />

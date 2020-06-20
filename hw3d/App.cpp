@@ -5,8 +5,9 @@
 #include <memory>
 #include <algorithm>
 #include "ChiliMath.h"
+#include "ThermoSim.h"
 
-
+ThermoSim ts(10, 10, 10);
 App::App()
 	:
 	wnd( 800,600,"The Donkey Fart Box" )
@@ -55,6 +56,7 @@ App::App()
 		std::uniform_int_distribution<int> typedist{ 0,2 };
 	};
 
+	
 	Factory f( wnd.Gfx() );
 	drawables.reserve( nDrawables );
 	std::generate_n( std::back_inserter( drawables ),nDrawables,f );
@@ -64,6 +66,7 @@ App::App()
 
 void App::DoFrame()
 {
+	ts.getNewState(ts.cubes, ts.cubes2);
 	const auto dt = timer.Mark();
 	wnd.Gfx().ClearBuffer( 0.07f,0.0f,0.12f );
 	for( auto& d : drawables )
@@ -80,6 +83,7 @@ App::~App()
 
 int App::Go()
 {
+	
 	while( true )
 	{
 		// process all messages pending, but to not block for new messages

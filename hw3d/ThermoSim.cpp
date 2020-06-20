@@ -11,17 +11,20 @@
 #include <thread>
 #include "ThermoSim.h"
 
-void update(std::vector<std::vector<std::vector<Cube*>>> cubes);
-void updateNeighbors(Cube* cube, std::vector<Cube*> neighbors);
+size_t width;
+size_t length;
+size_t height;
 
-std::vector<std::vector<std::vector<Cube*>>> getNewState()
-{
-    size_t width = 10;
-    size_t length = 10;
-    size_t height = 10;
-    
-    std::vector<std::vector<std::vector<Cube>>> cubes(width, std::vector<std::vector<Cube>>(length, std::vector<Cube>(0)));
+ThermoSim::ThermoSim(size_t width1, size_t length1, size_t height1){
+	width = width1;
+	length = length1;
+	height = height1;
+	std::vector<std::vector<std::vector<Cube>>> cubes(width, std::vector<std::vector<Cube>>(length, std::vector<Cube>(0)));
 	std::vector<std::vector<std::vector<Cube*>>> cubes2(width, std::vector<std::vector<Cube*>>(length, std::vector<Cube*>(height)));
+}
+void ThermoSim::getNewState(std::vector<std::vector<std::vector<Cube>>> cubes, std::vector<std::vector<std::vector<Cube*>>> cubes2)
+{
+    
     size_t index = 0;
    
     std::default_random_engine rg(time(0));
@@ -40,8 +43,6 @@ std::vector<std::vector<std::vector<Cube*>>> getNewState()
 		for (int y = 0; y < length; y++) {
 			for (int z = 0; z < height; z++) {
 				cubes2[x][y][z] = &cubes[x][y][z];
-				//std::cout << "Pointer Address: " << cubes2[x][y][z] << " " << cubes2[x][y][z]->getTemperature() << " | " << cubes[x][y][z].getTemperature();
-				//std::cout << "\n";
 
 			}
 		}
@@ -51,22 +52,11 @@ std::vector<std::vector<std::vector<Cube*>>> getNewState()
 	std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count() << "\n";
 	
 	t1 = std::chrono::high_resolution_clock::now();
-	for (int i = 0; i < 1; i++) {
-		update(cubes2);
-	}
+	
+	update(cubes2);
+	
 	t2 = std::chrono::high_resolution_clock::now();
 
-	/*for (int x = 0; x < width; x++) {
-		for (int y = 0; y < length; y++) {
-			for (int z = 0; z < height; z++) {
-				std::cout << (int)cubes2[x][y][z]->getTemperature();
-				std::cout << " ";
-			}
-			std::cout << "\n";
-		}
-		std::cout << "\n";
-	}*/
-	
 	std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
     
 }
