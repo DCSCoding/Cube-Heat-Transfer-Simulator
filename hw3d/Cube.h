@@ -1,41 +1,30 @@
 #pragma once
-#include "IndexedTriangleList.h"
-#include <DirectXMath.h>
 
-class Cube
-{
+class Cube {
 public:
-	template<class V>
-	static IndexedTriangleList<V> Make()
-	{
-		namespace dx = DirectX;
+	Cube();
+	float getConductivity();
+	float getTemperature();
+	float getSpecificHeat();
+	float getMass();
+	float getDensity();
+	float getEnergyContent();
+	float getEnergyContent(float temp);
+	size_t getState();
+	
+	void update(float energy);
+protected:
+	size_t state;
+	float temperature;
+	float energy_content;
+	const float volume;
+	const float mass;
+	const float density;
+	const float conductivity;
+	const float specific_heat;
+	const float melting_point;
+	const float boiling_point;
+	Cube(float temperature, float density, float conductivity, float specific_heat, float melting_point, float boiling_point);
 
-		constexpr float side = 1.0f / 2.0f;
-
-		std::vector<dx::XMFLOAT3> vertices;
-		vertices.emplace_back( -side,-side,-side ); // 0
-		vertices.emplace_back( side,-side,-side ); // 1
-		vertices.emplace_back( -side,side,-side ); // 2
-		vertices.emplace_back( side,side,-side ); // 3
-		vertices.emplace_back( -side,-side,side ); // 4
-		vertices.emplace_back( side,-side,side ); // 5
-		vertices.emplace_back( -side,side,side ); // 6
-		vertices.emplace_back( side,side,side ); // 7
-
-		std::vector<V> verts( vertices.size() );
-		for( size_t i = 0; i < vertices.size(); i++ )
-		{
-			verts[i].pos = vertices[i];
-		}
-		return{
-			std::move( verts ),{
-				0,2,1, 2,3,1,
-				1,3,5, 3,7,5,
-				2,6,3, 3,6,7,
-				4,5,7, 4,7,6,
-				0,4,2, 2,4,6,
-				0,1,4, 1,5,4
-			}
-		};
-	}
+	void setState(float temperature);
 };
