@@ -1,7 +1,7 @@
 #pragma once
-#include "Cube.h"
+#include "Logical_Cube.h"
 
-class VacuumCube : public Cube {
+class VacuumCube : public Logical_Cube {
 public:
 	VacuumCube();
 };

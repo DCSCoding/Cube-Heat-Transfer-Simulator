@@ -1,8 +1,8 @@
 #pragma once
 
-class Cube {
+class Logical_Cube {
 public:
-	Cube();
+	Logical_Cube();
 	float getConductivity();
 	float getTemperature();
 	float getSpecificHeat();
@@ -24,7 +24,7 @@ protected:
 	const float specific_heat;
 	const float melting_point;
 	const float boiling_point;
-	Cube(float temperature, float density, float conductivity, float specific_heat, float melting_point, float boiling_point);
+	Logical_Cube(float temperature, float density, float conductivity, float specific_heat, float melting_point, float boiling_point);
 
 	void setState(float temperature);
 };

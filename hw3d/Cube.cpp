@@ -1,8 +1,8 @@
 
-#include "Cube.h"
+#include "Logical_Cube.h"
 #include <iostream>
 
-Cube::Cube() :
+Logical_Cube::Logical_Cube() :
 	density(1.0),
 	volume(1000000),
 	mass(density * volume),
@@ -16,7 +16,7 @@ Cube::Cube() :
 	setState(temperature);
 	}
 
-Cube::Cube(float temperature, float density, float conductivity, float specific_heat, float melting_point, float boiling_point) :
+Logical_Cube::Logical_Cube(float temperature, float density, float conductivity, float specific_heat, float melting_point, float boiling_point) :
 	temperature(temperature),
 	density(density),
 	conductivity(conductivity),
@@ -31,40 +31,40 @@ Cube::Cube(float temperature, float density, float conductivity, float specific_
 	setState(temperature);
 	}
 
-float Cube::getConductivity() {
+float Logical_Cube::getConductivity() {
 	return conductivity;
 	}
 
-float Cube::getTemperature() {
+float Logical_Cube::getTemperature() {
 	return temperature;
 	}
 
-float  Cube::getSpecificHeat() {
+float  Logical_Cube::getSpecificHeat() {
 	return specific_heat;
 	}
 
-float  Cube::getMass() {
+float  Logical_Cube::getMass() {
 	return mass;
 	}
 
-float  Cube::getDensity() {
+float  Logical_Cube::getDensity() {
 	return density;
 	}
 
-float  Cube::getEnergyContent() {
+float  Logical_Cube::getEnergyContent() {
 	return energy_content;
 	}
 
-float  Cube::getEnergyContent(float temp) {
-	//Returns this cubes energy content at a given temperature.
+float  Logical_Cube::getEnergyContent(float temp) {
+	//Returns this Logical_Cubes energy content at a given temperature.
 	return mass * specific_heat * temp;
 	}
 
-size_t  Cube::getState() {
+size_t  Logical_Cube::getState() {
 	return state;
 	}
 
-void  Cube::setState(float temperature) {
+void  Logical_Cube::setState(float temperature) {
 	if (temperature > boiling_point) {
 		state = 2;
 		}
@@ -76,7 +76,7 @@ void  Cube::setState(float temperature) {
 		}
 	}
 
-void Cube::update(float energy) {
+void Logical_Cube::update(float energy) {
 		//System.out.println("Adding " + energy);
 		energy_content += energy;
 		temperature = energy_content / mass / specific_heat;

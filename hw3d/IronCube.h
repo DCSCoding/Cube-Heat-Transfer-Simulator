@@ -1,7 +1,7 @@
 #pragma once
-#include "Cube.h"
+#include "Logical_Cube.h"
 
-class IronCube : public Cube {
+class IronCube : public Logical_Cube {
 public:
 	IronCube();
 	IronCube(float temperature);

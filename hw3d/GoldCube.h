@@ -1,9 +1,9 @@
 #pragma once
 
 #pragma once
-#include "Cube.h"
+#include "Logical_Cube.h"
 
-class GoldCube : public Cube {
+class GoldCube : public Logical_Cube {
 public:
 	GoldCube();
 	GoldCube(float temperature);
