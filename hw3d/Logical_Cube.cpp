@@ -1,4 +1,3 @@
-
 #include "Logical_Cube.h"
 #include <iostream>
 
