@@ -147,24 +147,31 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AirCube.cpp" />
     <ClCompile Include="App.cpp" />
     <ClCompile Include="Bindable.cpp" />
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="ChiliException.cpp" />
     <ClCompile Include="ChiliTimer.cpp" />
+    <ClCompile Include="Cube.cpp" />
     <ClCompile Include="Drawable.cpp" />
     <ClCompile Include="dxerr.cpp" />
     <ClCompile Include="DxgiInfoManager.cpp" />
+    <ClCompile Include="GoldCube.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="IndexBuffer.cpp" />
     <ClCompile Include="InputLayout.cpp" />
+    <ClCompile Include="InsulatorCube.cpp" />
+    <ClCompile Include="IronCube.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="Melon.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="PixelShader.cpp" />
     <ClCompile Include="Pyramid.cpp" />
+    <ClCompile Include="ThermoSim.cpp" />
     <ClCompile Include="Topology.cpp" />
     <ClCompile Include="TransformCbuf.cpp" />
+    <ClCompile Include="VacuumCube.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
     <ClCompile Include="VertexShader.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -172,6 +179,7 @@
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AirCube.h" />
     <ClInclude Include="App.h" />
     <ClInclude Include="Bindable.h" />
     <ClInclude Include="BindableBase.h" />
@@ -187,11 +195,14 @@
     <ClInclude Include="DrawableBase.h" />
     <ClInclude Include="dxerr.h" />
     <ClInclude Include="DxgiInfoManager.h" />
+    <ClInclude Include="GoldCube.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="GraphicsThrowMacros.h" />
     <ClInclude Include="IndexBuffer.h" />
     <ClInclude Include="IndexedTriangleList.h" />
     <ClInclude Include="InputLayout.h" />
+    <ClInclude Include="InsulatorCube.h" />
+    <ClInclude Include="IronCube.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Melon.h" />
     <ClInclude Include="Mouse.h" />
@@ -203,6 +214,7 @@
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Topology.h" />
     <ClInclude Include="TransformCbuf.h" />
+    <ClInclude Include="VacuumCube.h" />
     <ClInclude Include="VertexBuffer.h" />
     <ClInclude Include="VertexShader.h" />
     <ClInclude Include="Window.h" />

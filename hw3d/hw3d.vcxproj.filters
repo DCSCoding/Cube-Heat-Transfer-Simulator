@@ -108,6 +108,27 @@
     <ClCompile Include="Melon.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
+    <ClCompile Include="IronCube.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InsulatorCube.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GoldCube.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AirCube.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VacuumCube.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ThermoSim.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WindowsMessageMap.h">
@@ -200,9 +221,6 @@
     <ClInclude Include="Sphere.h">
       <Filter>Header Files\Geometry</Filter>
     </ClInclude>
-    <ClInclude Include="Cube.h">
-      <Filter>Header Files\Geometry</Filter>
-    </ClInclude>
     <ClInclude Include="ChiliMath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -217,6 +235,24 @@
     </ClInclude>
     <ClInclude Include="Pyramid.h">
       <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IronCube.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InsulatorCube.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GoldCube.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VacuumCube.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AirCube.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
