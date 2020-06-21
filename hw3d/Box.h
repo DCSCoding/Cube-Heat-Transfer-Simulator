@@ -1,13 +1,16 @@
 #pragma once
 #include "DrawableBase.h"
+#include "ThermoSim.h"
+
 
 class Box : public DrawableBase<Box>
 {
 public:
-	Box( Graphics& gfx, float& xdis, float& ydis, float& zdis,
-		float& temp1);
+	Box( Graphics& gfx, float xdis, float ydis, float zdis,
+		ThermoSim& rts);
 	void Update( float dt ) noexcept override;
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
+	PixelShaderConstants GetPixelShaderConstants() const noexcept override;
 private:
 	// positional
 	float x;
@@ -15,6 +18,6 @@ private:
 	float z;;
 	// model transform
 	DirectX::XMFLOAT3X3 mt;
-	//temp
-	float& temp;
+	//ThermoSim reference
+	ThermoSim& ts;
 };

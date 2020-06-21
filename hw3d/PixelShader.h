@@ -8,4 +8,7 @@ public:
 	void Bind( Graphics& gfx ) noexcept override;
 protected:
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> pPixelShader;
+private:
+	//static std::unique_ptr<PixelConstantBuffer<DirectX::XMMATRIX>> pPcbuf;
+	//const Drawable& parent;
 };

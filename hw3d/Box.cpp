@@ -2,15 +2,16 @@
 #include "BindableBase.h"
 #include "GraphicsThrowMacros.h"
 #include "Cube.h"
+#include "ThermoSim.h"
 
 
-Box::Box( Graphics& gfx, float& xdis, float& ydis, float&zdis,
-	float& temp1)
+Box::Box( Graphics& gfx, float xdis, float ydis, float zdis,
+	ThermoSim& rts)
 	:
 	x(xdis),
 	y(ydis),
 	z(zdis),
-	temp(temp1)
+	ts(rts)
 {
 	namespace dx = DirectX;
 
@@ -32,7 +33,7 @@ Box::Box( Graphics& gfx, float& xdis, float& ydis, float&zdis,
 
 		AddStaticIndexBuffer( std::make_unique<IndexBuffer>( gfx,model.indices ) );
 
-		struct PixelShaderConstants
+		/*struct PixelShaderConstants
 		{
 			struct
 			{
@@ -55,7 +56,7 @@ Box::Box( Graphics& gfx, float& xdis, float& ydis, float&zdis,
 				{ temp/1000.0f,temp/1000.0f,temp/1000.0f },
 			}
 		};
-		AddStaticBind( std::make_unique<PixelConstantBuffer<PixelShaderConstants>>( gfx,cb2 ) );
+		AddStaticBind( std::make_unique<PixelConstantBuffer<PixelShaderConstants>>( gfx,cb2 ) );*/
 
 		const std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
 		{
@@ -70,6 +71,34 @@ Box::Box( Graphics& gfx, float& xdis, float& ydis, float&zdis,
 		SetIndexFromStatic();
 	}
 
+	struct PixelShaderConstants
+	{
+		struct
+		{
+			float r;
+			float g;
+			float b;
+			float a;
+		} face_colors[8];
+	};
+
+
+	float temp = ts.cubes[x][y][z].getTemperature() / 1000.0f;
+	const PixelShaderConstants cb2 =
+	{
+		{
+			{ temp,temp,temp },
+			{ temp,temp,temp },
+			{ temp,temp,temp },
+			{ temp,temp,temp },
+			{ temp,temp,temp },
+			{ temp,temp,temp },
+			{ temp,temp,temp },
+			{ temp,temp,temp },
+		}
+	};
+	AddBind(std::make_unique<PixelConstantBuffer<PixelShaderConstants>>(gfx, cb2));
+
 	AddBind( std::make_unique<TransformCbuf>( gfx,*this ) );
 	
 	// model deformation transform (per instance, not stored as bind)
@@ -81,6 +110,7 @@ Box::Box( Graphics& gfx, float& xdis, float& ydis, float&zdis,
 
 void Box::Update( float dt ) noexcept
 {
+	
 	/*roll += droll * dt;
 	pitch += dpitch * dt;
 	yaw += dyaw * dt;
@@ -95,5 +125,9 @@ DirectX::XMMATRIX Box::GetTransformXM() const noexcept
 	return dx::XMLoadFloat3x3( &mt ) *
 		dx::XMMatrixRotationRollPitchYaw(0.0, 0.0f, 0.0f)*
 		dx::XMMatrixTranslation( x,y,z) *
-		dx::XMMatrixTranslation( -5.0f,-5.0f,20.0f );
+		dx::XMMatrixTranslation( -4.5f,-4.5f,10.0f );
+}
+
+PixelShaderConstants Box::GetPixelShaderConstants() const noexcept {
+
 }

@@ -24,7 +24,7 @@ ThermoSim::ThermoSim(size_t width1, size_t length1, size_t height1) :
 	
 	std::default_random_engine rg(time(0));
 	std::uniform_int_distribution<int> random_int(1, 1000);
-	std::cout << cubes.size();
+	//std::cout << cubes.size();
 	size_t index = 0;
 	for (int x = 0; x < width; x++) {
 		for (int y = 0; y < length; y++) {
@@ -55,7 +55,7 @@ void ThermoSim::getNewState(std::vector<std::vector<std::vector<Logical_Cube>>> 
 	
 	auto t2 = std::chrono::high_resolution_clock::now();
 
-	std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
+	//std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
     
 }
 

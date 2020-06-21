@@ -62,17 +62,14 @@ App::App()
 	Factory f( wnd.Gfx() );
 	/*drawables.reserve( nDrawables );
 	std::generate_n( std::back_inserter( drawables ),nDrawables,f );*/
-	float temporary = 1.0f;
-	float& ptemp = temporary;
+	
 	for (int x = 0; x < ts.width; x++) {
 		for (int y = 0; y < ts.length; y++) {
 			for (int z = 0; z < ts.height; z++) {
-				float temp = ts.cubes[x][y][z].getTemperature();
 				float fx = float(x);
 				float fy = float(y);
 				float fz = float(z);
-				float& rtemp = temp;
-				drawables.push_back(std::make_unique<Box>(wnd.Gfx(), fx, fy, fz, rtemp));
+				drawables.push_back(std::make_unique<Box>(wnd.Gfx(), fx, fy, fz, ts));
 			}
 		}
 	}
@@ -91,6 +88,7 @@ void App::DoFrame()
 		d->Update( dt );
 		d->Draw( wnd.Gfx() );
 	}
+
 	wnd.Gfx().EndFrame();
 	
 }
