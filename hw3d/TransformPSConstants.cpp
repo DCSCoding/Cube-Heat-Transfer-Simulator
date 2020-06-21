@@ -1,11 +1,11 @@
 #include "TransformPSConstants.h"
 
-TransformPSConstants::TransformPSConstants(Graphics& gfx, const Drawable& parent) : 
+TransformPSConstants::TransformPSConstants(Graphics& gfx, const Drawable& parent) :
 	parent(parent)
 {
 	if (!pPcbuf)
 	{
-		
+		pPcbuf = std::make_unique<PixelConstantBuffer<PixelShaderConstants>>(gfx);
 	}
 }
 
