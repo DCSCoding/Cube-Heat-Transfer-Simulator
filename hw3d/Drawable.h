@@ -2,6 +2,7 @@
 #include "Graphics.h"
 #include <DirectXMath.h>
 #include "PixelShaderConstants.h"
+#include "TransformPSConstants.h"
 class Bindable;
 
 class Drawable
