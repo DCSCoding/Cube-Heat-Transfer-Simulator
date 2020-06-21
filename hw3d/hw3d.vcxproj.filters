@@ -102,12 +102,6 @@
     <ClCompile Include="Box.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
-    <ClCompile Include="Pyramid.cpp">
-      <Filter>Source Files\Drawable</Filter>
-    </ClCompile>
-    <ClCompile Include="Melon.cpp">
-      <Filter>Source Files\Drawable</Filter>
-    </ClCompile>
     <ClCompile Include="IronCube.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -128,6 +122,9 @@
     </ClCompile>
     <ClCompile Include="Logical_Cube.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TransformPSConstants.cpp">
+      <Filter>Source Files\Bindable</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -262,6 +259,9 @@
     </ClInclude>
     <ClInclude Include="PixelShaderConstants.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformPSConstants.h">
+      <Filter>Header Files\Bindable</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

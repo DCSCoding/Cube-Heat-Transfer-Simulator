@@ -1,7 +1,7 @@
 #include "PixelShader.h"
 #include "GraphicsThrowMacros.h"
 
-PixelShader::PixelShader( Graphics& gfx,const std::wstring& path )
+PixelShader::PixelShader( Graphics& gfx,const std::wstring& path) 
 {
 	INFOMAN( gfx );
 
@@ -12,6 +12,6 @@ PixelShader::PixelShader( Graphics& gfx,const std::wstring& path )
 
 void PixelShader::Bind( Graphics& gfx ) noexcept
 {
-	
 	GetContext( gfx )->PSSetShader( pPixelShader.Get(),nullptr,0u );
 }
+

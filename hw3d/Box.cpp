@@ -29,9 +29,9 @@ Box::Box( Graphics& gfx, float xdis, float ydis, float zdis,
 		auto pvsbc = pvs->GetBytecode();
 		AddStaticBind( std::move( pvs ) );
 
-		AddStaticBind( std::make_unique<PixelShader>( gfx,L"ColorIndexPS.cso" ) );
-
 		AddStaticIndexBuffer( std::make_unique<IndexBuffer>( gfx,model.indices ) );
+
+		AddStaticBind(std::make_unique<PixelShader>(gfx, L"ColorIndexPS.cso"));
 
 		/*struct PixelShaderConstants
 		{
@@ -71,6 +71,8 @@ Box::Box( Graphics& gfx, float xdis, float ydis, float zdis,
 		SetIndexFromStatic();
 	}
 
+	
+
 	struct PixelShaderConstants
 	{
 		struct
@@ -98,6 +100,8 @@ Box::Box( Graphics& gfx, float xdis, float ydis, float zdis,
 		}
 	};
 	AddBind(std::make_unique<PixelConstantBuffer<PixelShaderConstants>>(gfx, cb2));
+
+	AddBind(std::make_unique<TransformPSConstants>(gfx, *this));
 
 	AddBind( std::make_unique<TransformCbuf>( gfx,*this ) );
 	
@@ -129,5 +133,20 @@ DirectX::XMMATRIX Box::GetTransformXM() const noexcept
 }
 
 PixelShaderConstants Box::GetPixelShaderConstants() const noexcept {
-
+	
+	float temp = ts.cubes[x][y][z].getTemperature() / 1000.0f;
+	const PixelShaderConstants cb2 =
+	{
+		{
+			{ temp,temp,temp },
+			{ temp,temp,temp },
+			{ temp,temp,temp },
+			{ temp,temp,temp },
+			{ temp,temp,temp },
+			{ temp,temp,temp },
+			{ temp,temp,temp },
+			{ temp,temp,temp },
+		}
+	};
+	return cb2;
 }

@@ -1,7 +1,7 @@
 #pragma once
 #include "DrawableBase.h"
 #include "ThermoSim.h"
-
+#include "PixelShaderConstants.h"
 
 class Box : public DrawableBase<Box>
 {

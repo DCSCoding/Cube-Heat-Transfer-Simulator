@@ -1,6 +1,6 @@
 #pragma once
 
-struct PixelHeaderConstants {
+struct PixelShaderConstants {
 	struct
 	{
 		float r;

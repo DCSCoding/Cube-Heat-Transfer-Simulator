@@ -1,14 +1,12 @@
 #pragma once
 #include "Bindable.h"
-
+#include "ConstantBuffers.h"
 class PixelShader : public Bindable
 {
 public:
-	PixelShader( Graphics& gfx,const std::wstring& path );
+	PixelShader( Graphics& gfx,const std::wstring& path);
 	void Bind( Graphics& gfx ) noexcept override;
 protected:
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> pPixelShader;
-private:
-	//static std::unique_ptr<PixelConstantBuffer<DirectX::XMMATRIX>> pPcbuf;
-	//const Drawable& parent;
+
 };

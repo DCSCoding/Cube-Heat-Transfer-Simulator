@@ -164,13 +164,12 @@
     <ClCompile Include="InsulatorCube.cpp" />
     <ClCompile Include="IronCube.cpp" />
     <ClCompile Include="Keyboard.cpp" />
-    <ClCompile Include="Melon.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="PixelShader.cpp" />
-    <ClCompile Include="Pyramid.cpp" />
     <ClCompile Include="ThermoSim.cpp" />
     <ClCompile Include="Topology.cpp" />
     <ClCompile Include="TransformCbuf.cpp" />
+    <ClCompile Include="TransformPSConstants.cpp" />
     <ClCompile Include="VacuumCube.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
     <ClCompile Include="VertexShader.cpp" />
@@ -217,6 +216,7 @@
     <ClInclude Include="ThermoSim.h" />
     <ClInclude Include="Topology.h" />
     <ClInclude Include="TransformCbuf.h" />
+    <ClInclude Include="TransformPSConstants.h" />
     <ClInclude Include="VacuumCube.h" />
     <ClInclude Include="VertexBuffer.h" />
     <ClInclude Include="VertexShader.h" />

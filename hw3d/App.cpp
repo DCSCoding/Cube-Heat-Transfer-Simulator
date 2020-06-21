@@ -8,7 +8,7 @@
 #include "ThermoSim.h"
 #include <iostream>
 
-ThermoSim ts(10, 10, 10);
+ThermoSim ts(1, 1, 1);
 App::App()
 	:
 	wnd( 800,600,"The Donkey Fart Box" )
