@@ -4,6 +4,7 @@
 #include <iostream>
 #include "Logical_Cube.h"
 #include "AirCube.h"
+#include "GoldCube.h"
 #include <vector>
 #include <random>
 #include <ctime>
@@ -121,11 +122,12 @@ void ThermoSim::update(std::vector<std::vector<std::vector<Logical_Cube*>>> cube
 			}
 		}
 	}
+
 }
 
 void ThermoSim::updateNeighbors(Logical_Cube* cube, std::vector<Logical_Cube*> neighbors) {
 
-	int scaler = 10;
+	int scaler = 1000;
 
 	std::vector<float> transfer_rate;
 

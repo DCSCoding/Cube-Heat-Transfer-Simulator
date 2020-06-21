@@ -77,6 +77,7 @@ void  Logical_Cube::setState(float temperature) {
 
 void Logical_Cube::update(float energy) {
 		//System.out.println("Adding " + energy);
+		float m = temperature;
 		energy_content += energy;
 		temperature = energy_content / mass / specific_heat;
 		setState(temperature);

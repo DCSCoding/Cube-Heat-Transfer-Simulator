@@ -10,8 +10,10 @@ public:
 	size_t height;
 	std::vector<std::vector<std::vector<Logical_Cube>>> cubes;
 	std::vector<std::vector<std::vector<Logical_Cube*>>> cubes2;
-private:
 	void update(std::vector<std::vector<std::vector<Logical_Cube*>>> cubes);
+	
+private:
 	void updateNeighbors(Logical_Cube* cube, std::vector<Logical_Cube*> neighbors);
+	
 
 };

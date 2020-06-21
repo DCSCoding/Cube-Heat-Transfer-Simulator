@@ -101,7 +101,7 @@ Box::Box( Graphics& gfx, float xdis, float ydis, float zdis,
 	};
 	AddBind(std::make_unique<PixelConstantBuffer<PixelShaderConstants>>(gfx, cb2));
 
-	//AddBind(std::make_unique<TransformPSConstants>(gfx, *this));
+	AddBind(std::make_unique<TransformPSConstants>(gfx, *this));
 
 	AddBind( std::make_unique<TransformCbuf>( gfx,*this ) );
 	

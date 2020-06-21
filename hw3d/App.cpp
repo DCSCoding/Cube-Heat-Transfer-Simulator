@@ -8,7 +8,7 @@
 #include "ThermoSim.h"
 #include <iostream>
 
-ThermoSim ts(1, 1, 1);
+ThermoSim ts(10, 10, 10);
 App::App()
 	:
 	wnd( 800,600,"The Donkey Fart Box" )
@@ -80,7 +80,7 @@ App::App()
 void App::DoFrame()
 {
 	std::cout << ts.height + ts.width + ts.length;
-	ts.getNewState(ts.cubes, ts.cubes2);
+	ts.update(ts.cubes2);
 	const auto dt = timer.Mark();
 	wnd.Gfx().ClearBuffer( 0.07f,0.0f,0.12f );
 	for( auto& d : drawables )
