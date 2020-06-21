@@ -6,5 +6,5 @@ InsulatorCube::InsulatorCube() :
 {}
 
 InsulatorCube::InsulatorCube(float temperature) :
-	Logical-Cube(temperature, 19.3, 1.2, 0.0, 10000, 100000)
+	Logical_Cube(temperature, 19.3, 1.2, 0.0, 10000, 100000)
 {}

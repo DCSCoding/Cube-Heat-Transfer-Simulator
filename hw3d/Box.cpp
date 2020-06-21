@@ -4,24 +4,13 @@
 #include "Cube.h"
 
 
-Box::Box( Graphics& gfx,
-	std::mt19937& rng,
-	std::uniform_real_distribution<float>& adist,
-	std::uniform_real_distribution<float>& ddist,
-	std::uniform_real_distribution<float>& odist,
-	std::uniform_real_distribution<float>& rdist,
-	std::uniform_real_distribution<float>& bdist )
+Box::Box( Graphics& gfx, float& xdis, float& ydis, float&zdis,
+	float& temp1)
 	:
-	r( rdist( rng ) ),
-	droll( ddist( rng ) ),
-	dpitch( ddist( rng ) ),
-	dyaw( ddist( rng ) ),
-	dphi( odist( rng ) ),
-	dtheta( odist( rng ) ),
-	dchi( odist( rng ) ),
-	chi( adist( rng ) ),
-	theta( adist( rng ) ),
-	phi( adist( rng ) )
+	x(xdis),
+	y(ydis),
+	z(zdis),
+	temp(temp1)
 {
 	namespace dx = DirectX;
 
@@ -56,14 +45,14 @@ Box::Box( Graphics& gfx,
 		const PixelShaderConstants cb2 =
 		{
 			{
-				{ 1.0f,1.0f,1.0f },
-				{ 1.0f,0.0f,0.0f },
-				{ 0.0f,1.0f,0.0f },
-				{ 1.0f,1.0f,0.0f },
-				{ 0.0f,0.0f,1.0f },
-				{ 1.0f,0.0f,1.0f },
-				{ 0.0f,1.0f,1.0f },
-				{ 0.0f,0.0f,0.0f },
+				{ temp/1000.0f,temp/1000.0f,temp/1000.0f },
+				{ temp/1000.0f,temp/1000.0f,temp/1000.0f },
+				{ temp/1000.0f,temp/1000.0f,temp/1000.0f },
+				{ temp/1000.0f,temp/1000.0f,temp/1000.0f },
+				{ temp/1000.0f,temp/1000.0f,temp/1000.0f },
+				{ temp/1000.0f,temp/1000.0f,temp/1000.0f },
+				{ temp/1000.0f,temp/1000.0f,temp/1000.0f },
+				{ temp/1000.0f,temp/1000.0f,temp/1000.0f },
 			}
 		};
 		AddStaticBind( std::make_unique<PixelConstantBuffer<PixelShaderConstants>>( gfx,cb2 ) );
@@ -74,7 +63,7 @@ Box::Box( Graphics& gfx,
 		};
 		AddStaticBind( std::make_unique<InputLayout>( gfx,ied,pvsbc ) );
 
-		AddStaticBind( std::make_unique<Topology>( gfx,D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
+		AddStaticBind( std::make_unique<Topology>( gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
 	}
 	else
 	{
@@ -86,26 +75,25 @@ Box::Box( Graphics& gfx,
 	// model deformation transform (per instance, not stored as bind)
 	dx::XMStoreFloat3x3(
 		&mt,
-		dx::XMMatrixScaling( 1.0f,1.0f,bdist( rng ) )
+		dx::XMMatrixScaling( 0.5f,0.5f,0.5f )
 	);
 }
 
 void Box::Update( float dt ) noexcept
 {
-	roll += droll * dt;
+	/*roll += droll * dt;
 	pitch += dpitch * dt;
 	yaw += dyaw * dt;
 	theta += dtheta * dt;
 	phi += dphi * dt;
-	chi += dchi * dt;
+	chi += dchi * dt;*/
 }
 
 DirectX::XMMATRIX Box::GetTransformXM() const noexcept
 {
 	namespace dx = DirectX;
 	return dx::XMLoadFloat3x3( &mt ) *
-		dx::XMMatrixRotationRollPitchYaw( pitch,yaw,roll ) *
-		dx::XMMatrixTranslation( r,0.0f,0.0f ) *
-		dx::XMMatrixRotationRollPitchYaw( theta,phi,chi ) *
-		dx::XMMatrixTranslation( 0.0f,0.0f,20.0f );
+		dx::XMMatrixRotationRollPitchYaw(0.0, 0.0f, 0.0f)*
+		dx::XMMatrixTranslation( x,y,z) *
+		dx::XMMatrixTranslation( -5.0f,-5.0f,20.0f );
 }

@@ -29,7 +29,7 @@ protected:
 			if( const auto p = dynamic_cast<IndexBuffer*>(b.get()) )
 			{
 				pIndexBuffer = p;
-				return;
+				return; 
 			}
 		}
 		assert( "Failed to find index buffer in static binds" && pIndexBuffer != nullptr );

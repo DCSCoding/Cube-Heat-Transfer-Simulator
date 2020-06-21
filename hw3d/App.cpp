@@ -6,6 +6,7 @@
 #include <algorithm>
 #include "ChiliMath.h"
 #include "ThermoSim.h"
+#include <iostream>
 
 ThermoSim ts(10, 10, 10);
 App::App()
@@ -19,9 +20,10 @@ App::App()
 			:
 			gfx( gfx )
 		{}
+		
 		std::unique_ptr<Drawable> operator()()
 		{
-			switch( typedist( rng ) )
+			/*switch( typedist( rng ) )
 			{
 			case 0:
 				return std::make_unique<Pyramid>(
@@ -31,7 +33,7 @@ App::App()
 			case 1:
 				return std::make_unique<Box>(
 					gfx,rng,adist,ddist,
-					odist,rdist,bdist
+					odist,rdist,bdist,ptemp
 				);
 			case 2:
 				return std::make_unique<Melon>(
@@ -41,7 +43,7 @@ App::App()
 			default:
 				assert( false && "bad drawable type in factory" );
 				return {};
-			}
+			}*/
 		}
 	private:
 		Graphics& gfx;
@@ -58,14 +60,29 @@ App::App()
 
 	
 	Factory f( wnd.Gfx() );
-	drawables.reserve( nDrawables );
-	std::generate_n( std::back_inserter( drawables ),nDrawables,f );
+	/*drawables.reserve( nDrawables );
+	std::generate_n( std::back_inserter( drawables ),nDrawables,f );*/
+	float temporary = 1.0f;
+	float& ptemp = temporary;
+	for (int x = 0; x < ts.width; x++) {
+		for (int y = 0; y < ts.length; y++) {
+			for (int z = 0; z < ts.height; z++) {
+				float temp = ts.cubes[x][y][z].getTemperature();
+				float fx = float(x);
+				float fy = float(y);
+				float fz = float(z);
+				float& rtemp = temp;
+				drawables.push_back(std::make_unique<Box>(wnd.Gfx(), fx, fy, fz, rtemp));
+			}
+		}
+	}
 
 	wnd.Gfx().SetProjection( DirectX::XMMatrixPerspectiveLH( 1.0f,3.0f / 4.0f,0.5f,40.0f ) );
 }
 
 void App::DoFrame()
 {
+	std::cout << ts.height + ts.width + ts.length;
 	ts.getNewState(ts.cubes, ts.cubes2);
 	const auto dt = timer.Mark();
 	wnd.Gfx().ClearBuffer( 0.07f,0.0f,0.12f );
@@ -75,6 +92,7 @@ void App::DoFrame()
 		d->Draw( wnd.Gfx() );
 	}
 	wnd.Gfx().EndFrame();
+	
 }
 
 App::~App()

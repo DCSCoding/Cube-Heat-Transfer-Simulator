@@ -2,7 +2,7 @@
 //
 
 #include <iostream>
-#include "Cube.h"
+#include "Logical_Cube.h"
 #include "AirCube.h"
 #include <vector>
 #include <random>
@@ -10,34 +10,30 @@
 #include <chrono>
 #include <thread>
 #include "ThermoSim.h"
+#include <iostream>
 
-size_t width;
-size_t length;
-size_t height;
 
-ThermoSim::ThermoSim(size_t width1, size_t length1, size_t height1){
-	width = width1;
-	length = length1;
-	height = height1;
-	std::vector<std::vector<std::vector<Cube>>> cubes(width, std::vector<std::vector<Cube>>(length, std::vector<Cube>(0)));
-	std::vector<std::vector<std::vector<Cube*>>> cubes2(width, std::vector<std::vector<Cube*>>(length, std::vector<Cube*>(height)));
-}
-void ThermoSim::getNewState(std::vector<std::vector<std::vector<Cube>>> cubes, std::vector<std::vector<std::vector<Cube*>>> cubes2)
+ThermoSim::ThermoSim(size_t width1, size_t length1, size_t height1) :
+	width(width1), length(length1), height(height1), cubes(width, std::vector<std::vector<Logical_Cube>>(length, std::vector<Logical_Cube>(0))),
+		cubes2(width1, std::vector<std::vector<Logical_Cube*>>(length1, std::vector<Logical_Cube*>(height1)))
+
 {
-    
-    size_t index = 0;
-   
-    std::default_random_engine rg(time(0));
-    std::uniform_int_distribution<int> random_int(1, 1000);
-
-    for (int x = 0; x < width; x++) {
-        for (int y = 0; y < length; y++) {
-            for (int z = 0; z < height; z++) {
-                cubes[x][y].push_back(AirCube(random_int(rg)));
-                index++;
-            }
-        }
-    };
+	
+	//std::vector<std::vector<std::vector<Logical_Cube>>> cubes(width, std::vector<std::vector<Logical_Cube>>(length, std::vector<Logical_Cube>(0)));
+	//std::vector<std::vector<std::vector<Logical_Cube*>>> cubes2(width, std::vector<std::vector<Logical_Cube*>>(length, std::vector<Logical_Cube*>(height)));
+	
+	std::default_random_engine rg(time(0));
+	std::uniform_int_distribution<int> random_int(1, 1000);
+	std::cout << cubes.size();
+	size_t index = 0;
+	for (int x = 0; x < width; x++) {
+		for (int y = 0; y < length; y++) {
+			for (int z = 0; z < height; z++) {
+				cubes[x][y].push_back(AirCube(random_int(rg)));
+				index++;
+			}
+		}
+	};
 	auto t1 = std::chrono::high_resolution_clock::now();
 	for (int x = 0; x < width; x++) {
 		for (int y = 0; y < length; y++) {
@@ -47,25 +43,27 @@ void ThermoSim::getNewState(std::vector<std::vector<std::vector<Cube>>> cubes, s
 			}
 		}
 	};
-	auto t2 = std::chrono::high_resolution_clock::now();
 	
-	std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count() << "\n";
 	
-	t1 = std::chrono::high_resolution_clock::now();
+}
+void ThermoSim::getNewState(std::vector<std::vector<std::vector<Logical_Cube>>> cubes, std::vector<std::vector<std::vector<Logical_Cube*>>> cubes2)
+{
+    
+	auto t1 = std::chrono::high_resolution_clock::now();
 	
 	update(cubes2);
 	
-	t2 = std::chrono::high_resolution_clock::now();
+	auto t2 = std::chrono::high_resolution_clock::now();
 
 	std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
     
 }
 
-void update(std::vector<std::vector<std::vector<Cube*>>> cubes) {
+void ThermoSim::update(std::vector<std::vector<std::vector<Logical_Cube*>>> cubes) {
 	for (int x = 0; x < cubes.size(); x++) {
 		for (int y = 0; y < cubes[x].size(); y++) {
 			for (int z = 0; z < cubes[x][y].size(); z++) {
-				std::vector<Cube*> neighbors;
+				std::vector<Logical_Cube*> neighbors;
 				if (x - 1 >= 0) {
 					if (y - 1 >= 0) {
 						neighbors.push_back(cubes[x - 1][y - 1][z]);
@@ -125,13 +123,13 @@ void update(std::vector<std::vector<std::vector<Cube*>>> cubes) {
 	}
 }
 
-void updateNeighbors(Cube* cube, std::vector<Cube*> neighbors) {
+void ThermoSim::updateNeighbors(Logical_Cube* cube, std::vector<Logical_Cube*> neighbors) {
 
 	int scaler = 10;
 
 	std::vector<float> transfer_rate;
 
-	for (Cube* c : neighbors) {
+	for (Logical_Cube* c : neighbors) {
 		float ctr = cube->getConductivity() * c->getConductivity();
 		transfer_rate.push_back(ctr * (cube->getTemperature() - c->getTemperature()) * scaler);
 	}
