@@ -2,25 +2,31 @@
 #include "Melon.h"
 #include "Pyramid.h"
 #include "Box.h"
+#include "Sheet.h"
+#include "SkinnedBox.h"
 #include <memory>
 #include <algorithm>
 #include "ChiliMath.h"
+#include "Surface.h"
+#include "GDIPlusManager.h"
 #include "ThermoSim.h"
-#include <iostream>
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_win32.h"
+#include "imgui/imgui_impl_dx11.h"
 
 ThermoSim ts(10, 10, 10);
 App::App()
 	:
-	wnd( 1920, 1080,"Thermo" )
+	wnd(1920, 1080, "Thermo")
 {
 	class Factory
 	{
 	public:
-		Factory( Graphics& gfx )
+		Factory(Graphics& gfx)
 			:
-			gfx( gfx )
+			gfx(gfx)
 		{}
-		
+
 		std::unique_ptr<Drawable> operator()()
 		{
 			/*switch( typedist( rng ) )
@@ -58,11 +64,11 @@ App::App()
 		std::uniform_int_distribution<int> typedist{ 0,2 };
 	};
 
-	
-	Factory f( wnd.Gfx() );
+
+	Factory f(wnd.Gfx());
 	/*drawables.reserve( nDrawables );
 	std::generate_n( std::back_inserter( drawables ),nDrawables,f );*/
-	
+
 	for (int x = 0; x < ts.width; x++) {
 		for (int y = 0; y < ts.length; y++) {
 			for (int z = 0; z < ts.height; z++) {
@@ -74,23 +80,37 @@ App::App()
 		}
 	}
 
-	wnd.Gfx().SetProjection( DirectX::XMMatrixPerspectiveLH( 1.0f,3.0f / 4.0f,0.5f,40.0f ) );
+	const auto s = Surface::FromFile("Images\\kappa50.png");
+
+	wnd.Gfx().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
 }
 
 void App::DoFrame()
 {
-	std::cout << ts.height + ts.width + ts.length;
+
 	ts.update(ts.cubes2);
 	const auto dt = timer.Mark();
-	wnd.Gfx().ClearBuffer( 0.07f,0.0f,0.12f );
-	for( auto& d : drawables )
+	wnd.Gfx().ClearBuffer(0.07f, 0.0f, 0.12f);
+	for (auto& d : drawables)
 	{
-		d->Update( dt );
-		d->Draw( wnd.Gfx() );
+		d->Update(dt);
+		d->Draw(wnd.Gfx());
 	}
 
+	ImGui_ImplDX11_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+	ImGui::NewFrame();
+
+	static bool show_demo_window = true;
+	if (show_demo_window) {
+		ImGui::ShowDemoWindow(&show_demo_window);
+	}
+	ImGui::Render();
+	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+
+	//present
 	wnd.Gfx().EndFrame();
-	
+
 }
 
 App::~App()
@@ -99,11 +119,11 @@ App::~App()
 
 int App::Go()
 {
-	
-	while( true )
+
+	while (true)
 	{
 		// process all messages pending, but to not block for new messages
-		if( const auto ecode = Window::ProcessMessages() )
+		if (const auto ecode = Window::ProcessMessages())
 		{
 			// if return optional has value, means we're quitting so return exit code
 			return *ecode;
