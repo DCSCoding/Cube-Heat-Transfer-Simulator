@@ -21,7 +21,7 @@
 #include <sstream>
 #include "resource.h"
 #include "WindowsThrowMacros.h"
-
+#include "imgui_impl_win_32.h"
 
 // Window Class Stuff
 Window::WindowClass Window::WindowClass::wndClass;
@@ -98,6 +98,8 @@ Window::Window( int width,int height,const char* name )
 	}
 	// newly created windows start off as hidden
 	ShowWindow( hWnd,SW_SHOWDEFAULT );
+	// Init ImGUI Win32 Impl
+	ImGui_ImplWin32_Init(hWnd);
 	// create graphics object
 	pGfx = std::make_unique<Graphics>( hWnd );
 }
