@@ -11,7 +11,7 @@
 ThermoSim ts(10, 10, 10);
 App::App()
 	:
-	wnd( 800,600,"The Donkey Fart Box" )
+	wnd( 1920, 1080,"Thermo" )
 {
 	class Factory
 	{
@@ -69,7 +69,7 @@ App::App()
 				float fx = float(x);
 				float fy = float(y);
 				float fz = float(z);
-				drawables.push_back(std::make_unique<Box>(wnd.Gfx(), fx, fy, fz, ts));
+				drawables.push_back(std::make_unique<Box>(wnd.Gfx(), fx, fy, fz, ts, 0.0f, 0.0f, 0.0f));
 			}
 		}
 	}

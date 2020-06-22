@@ -5,13 +5,17 @@
 #include "ThermoSim.h"
 
 
-Box::Box( Graphics& gfx, float xdis, float ydis, float zdis,
-	ThermoSim& rts)
+Box::Box(Graphics& gfx, float xdis, float ydis, float zdis,
+	ThermoSim& rts, float chi1, float theta1, float phi1)
 	:
 	x(xdis),
 	y(ydis),
 	z(zdis),
-	ts(rts)
+	ts(rts),
+	chi(chi1),
+	theta(theta1),
+	phi(phi1)
+
 {
 	namespace dx = DirectX;
 
@@ -114,20 +118,17 @@ Box::Box( Graphics& gfx, float xdis, float ydis, float zdis,
 
 void Box::Update( float dt ) noexcept
 {
-	
-	/*roll += droll * dt;
-	pitch += dpitch * dt;
-	yaw += dyaw * dt;
-	theta += dtheta * dt;
-	phi += dphi * dt;
-	chi += dchi * dt;*/
+
+	theta += 1.0f * dt;
+	phi += 1.0f * dt;
+	chi += 1.0f * dt;
 }
 
 DirectX::XMMATRIX Box::GetTransformXM() const noexcept
 {
 	namespace dx = DirectX;
 	return dx::XMLoadFloat3x3( &mt ) *
-		dx::XMMatrixRotationRollPitchYaw(0.0, 0.0f, 0.0f)*
+		//dx::XMMatrixRotationRollPitchYaw(theta, phi, chi)*
 		dx::XMMatrixTranslation( x,y,z) *
 		dx::XMMatrixTranslation( -4.5f,-4.5f,10.0f );
 }
