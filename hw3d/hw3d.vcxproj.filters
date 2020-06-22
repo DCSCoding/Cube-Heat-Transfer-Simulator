@@ -37,6 +37,12 @@
     <Filter Include="Header Files\Geometry">
       <UniqueIdentifier>{59371286-4d7e-4419-ad85-f20c1b8261ff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Cubes">
+      <UniqueIdentifier>{59026c4b-938b-4db6-aa37-688a44950e91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Cubes">
+      <UniqueIdentifier>{992d5ec2-f68a-47f2-8086-a65c22ded86e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -102,28 +108,64 @@
     <ClCompile Include="Box.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
-    <ClCompile Include="IronCube.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="InsulatorCube.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GoldCube.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AirCube.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VacuumCube.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ThermoSim.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Logical_Cube.cpp">
+    <ClCompile Include="TransformPSConstants.cpp">
+      <Filter>Source Files\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TransformPSConstants.cpp">
+    <ClCompile Include="GDIPlusManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImguiManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AirCube.cpp">
+      <Filter>Source Files\Cubes</Filter>
+    </ClCompile>
+    <ClCompile Include="GoldCube.cpp">
+      <Filter>Source Files\Cubes</Filter>
+    </ClCompile>
+    <ClCompile Include="InsulatorCube.cpp">
+      <Filter>Source Files\Cubes</Filter>
+    </ClCompile>
+    <ClCompile Include="IronCube.cpp">
+      <Filter>Source Files\Cubes</Filter>
+    </ClCompile>
+    <ClCompile Include="Logical_Cube.cpp">
+      <Filter>Source Files\Cubes</Filter>
+    </ClCompile>
+    <ClCompile Include="Melon.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="Pyramid.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="VacuumCube.cpp">
+      <Filter>Source Files\Cubes</Filter>
+    </ClCompile>
+    <ClCompile Include="SolidSphere.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="SkinnedBox.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="Surface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sheet.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="Sampler.cpp">
+      <Filter>Source Files\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
       <Filter>Source Files\Bindable</Filter>
     </ClCompile>
   </ItemGroup>
@@ -233,25 +275,7 @@
     <ClInclude Include="Pyramid.h">
       <Filter>Header Files\Drawable</Filter>
     </ClInclude>
-    <ClInclude Include="IronCube.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="InsulatorCube.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GoldCube.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="VacuumCube.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AirCube.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ThermoSim.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Logical_Cube.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Cube.h">
@@ -261,6 +285,54 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TransformPSConstants.h">
+      <Filter>Header Files\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GDIPlusManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImguiManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Surface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AirCube.h">
+      <Filter>Header Files\Cubes</Filter>
+    </ClInclude>
+    <ClInclude Include="GoldCube.h">
+      <Filter>Header Files\Cubes</Filter>
+    </ClInclude>
+    <ClInclude Include="InsulatorCube.h">
+      <Filter>Header Files\Cubes</Filter>
+    </ClInclude>
+    <ClInclude Include="IronCube.h">
+      <Filter>Header Files\Cubes</Filter>
+    </ClInclude>
+    <ClInclude Include="Logical_Cube.h">
+      <Filter>Header Files\Cubes</Filter>
+    </ClInclude>
+    <ClInclude Include="VacuumCube.h">
+      <Filter>Header Files\Cubes</Filter>
+    </ClInclude>
+    <ClInclude Include="Sheet.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="SolidSphere.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="SkinnedBox.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Header Files\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="Sampler.h">
       <Filter>Header Files\Bindable</Filter>
     </ClInclude>
   </ItemGroup>
@@ -284,6 +356,7 @@
     <None Include="DXTrace.inl">
       <Filter>Dxerr</Filter>
     </None>
+    <None Include="imgui.ini" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="ColorBlendPS.hlsl">
@@ -296,6 +369,24 @@
       <Filter>Shader</Filter>
     </FxCompile>
     <FxCompile Include="ColorIndexVS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="TextureVS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="PhongPS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="PhongVS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="SolidPS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="SolidVS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="TexturePS.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>
