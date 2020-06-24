@@ -1,5 +1,5 @@
 #pragma once
-
+#include "Cubependium.h"
 class Logical_Cube {
 public:
 	Logical_Cube();
@@ -11,20 +11,13 @@ public:
 	float getEnergyContent();
 	float getEnergyContent(float temp);
 	size_t getState();
-	float temperature;
+	const size_t id = 0;
 	void update(float energy);
+	Cubependium cp;
 protected:
 	size_t state;
-	//float temperature;
+	float temperature;
 	float energy_content;
-	const float volume;
-	const float mass;
-	const float density;
-	const float conductivity;
-	const float specific_heat;
-	const float melting_point;
-	const float boiling_point;
-	Logical_Cube(float temperature, float density, float conductivity, float specific_heat, float melting_point, float boiling_point);
-
+	Logical_Cube(float temperature);
 	void setState(float temperature);
 };

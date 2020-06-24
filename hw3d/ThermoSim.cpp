@@ -133,7 +133,7 @@ void ThermoSim::update(std::vector<std::vector<std::vector<Logical_Cube*>>> cube
 
 void ThermoSim::updateNeighbors(Logical_Cube* cube, std::vector<Logical_Cube*> neighbors) {
 
-	int scaler = 1000;
+	int scaler = 100;
 
 	std::vector<float> transfer_rate;
 

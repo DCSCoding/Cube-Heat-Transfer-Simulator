@@ -2,9 +2,9 @@
 #include "InsulatorCube.h"
 
 InsulatorCube::InsulatorCube() :
-	Logical_Cube(273, 19.3, 1.2, 0.0, 10000, 100000)
+	Logical_Cube(273)
 {}
 
 InsulatorCube::InsulatorCube(float temperature) :
-	Logical_Cube(temperature, 19.3, 1.2, 0.0, 10000, 100000)
+	Logical_Cube(temperature)
 {}

@@ -14,7 +14,7 @@
 #include "imgui/imgui_impl_win32.h"
 #include "imgui/imgui_impl_dx11.h"
 
-ThermoSim ts(10, 10, 10);
+ThermoSim ts(20, 20, 20);
 App::App()
 	:
 	wnd(1920, 1080, "Thermo")
@@ -143,7 +143,6 @@ void App::CubeMenu() {
 	
 	if (ImGui::Begin("Cube Menu"))
 	{
-		ImGui::SliderFloat("Cube 0, 0, 0 temp: ", &ts.cubes2[0][0][0]->temperature, 0.0f, 1000.0f);
 		
 	};
 	ImGui::End();
