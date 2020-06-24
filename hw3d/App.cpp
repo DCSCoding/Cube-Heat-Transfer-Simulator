@@ -14,7 +14,8 @@
 #include "imgui/imgui_impl_win32.h"
 #include "imgui/imgui_impl_dx11.h"
 
-ThermoSim ts(20, 20, 20);
+ThermoSim ts(10, 10, 10);
+long duration = 0;
 App::App()
 	:
 	wnd(1920, 1080, "Thermo")
@@ -88,8 +89,11 @@ App::App()
 
 void App::DoFrame()
 {
-
+	auto t1 = std::chrono::high_resolution_clock::now();
 	ts.update(ts.cubes2);
+	auto t2 = std::chrono::high_resolution_clock::now();
+	duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
+
 	const auto dt = timer.Mark();
 
 	if (wnd.kbd.KeyIsPressed(VK_SPACE)) {
@@ -143,7 +147,8 @@ void App::CubeMenu() {
 	
 	if (ImGui::Begin("Cube Menu"))
 	{
-		
+		ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		ImGui::Text("%ld ms per cycle", duration);
 	};
 	ImGui::End();
 }

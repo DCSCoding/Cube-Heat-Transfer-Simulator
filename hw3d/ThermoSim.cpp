@@ -13,7 +13,6 @@
 #include "ThermoSim.h"
 #include <iostream>
 
-
 ThermoSim::ThermoSim(size_t width1, size_t length1, size_t height1) :
 	width(width1), length(length1), height(height1), cubes(width, std::vector<std::vector<Logical_Cube>>(length, std::vector<Logical_Cube>(0))),
 		cubes2(width1, std::vector<std::vector<Logical_Cube*>>(length1, std::vector<Logical_Cube*>(height1)))
@@ -56,11 +55,11 @@ ThermoSim::ThermoSim(size_t width1, size_t length1, size_t height1) :
 void ThermoSim::getNewState(std::vector<std::vector<std::vector<Logical_Cube>>> cubes, std::vector<std::vector<std::vector<Logical_Cube*>>> cubes2)
 {
     
-	auto t1 = std::chrono::high_resolution_clock::now();
+	
 	
 	update(cubes2);
 	
-	auto t2 = std::chrono::high_resolution_clock::now();
+	
 
 	//std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
     
