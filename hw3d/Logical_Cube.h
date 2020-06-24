@@ -11,11 +11,11 @@ public:
 	float getEnergyContent();
 	float getEnergyContent(float temp);
 	size_t getState();
-	
+	float temperature;
 	void update(float energy);
 protected:
 	size_t state;
-	float temperature;
+	//float temperature;
 	float energy_content;
 	const float volume;
 	const float mass;

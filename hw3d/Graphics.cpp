@@ -116,6 +116,10 @@ Graphics::Graphics(HWND hWnd)
 
 void Graphics::EndFrame()
 {
+	if (imguiEnabled) {
+		ImGui::Render();
+		ImGui_ImplDX11_RenderDrawData( ImGui::GetDrawData() );
+	}
 	HRESULT hr;
 #ifndef NDEBUG
 	infoManager.Set();
@@ -133,8 +137,16 @@ void Graphics::EndFrame()
 	}
 }
 
-void Graphics::ClearBuffer(float red, float green, float blue) noexcept
+void Graphics::BeginFrame(float red, float green, float blue) noexcept
 {
+	// imgui begin frame
+	if (imguiEnabled)
+	{
+		ImGui_ImplDX11_NewFrame();
+		ImGui_ImplWin32_NewFrame();
+		ImGui::NewFrame();
+	}
+
 	const float color[] = { red,green,blue,1.0f };
 	pContext->ClearRenderTargetView(pTarget.Get(), color);
 	pContext->ClearDepthStencilView(pDSV.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u);
@@ -157,6 +169,13 @@ DirectX::XMMATRIX Graphics::GetProjection() const noexcept
 
 
 // Graphics exception stuff
+
+void Graphics::SetCamera(DirectX::XMMATRIX cam) noexcept {
+	camera = cam;
+}
+DirectX::XMMATRIX Graphics::GetCamera() const noexcept {
+	return camera;
+}
 Graphics::HrException::HrException(int line, const char* file, HRESULT hr, std::vector<std::string> infoMsgs) noexcept
 	:
 	Exception(line, file),
@@ -173,6 +192,21 @@ Graphics::HrException::HrException(int line, const char* file, HRESULT hr, std::
 	{
 		info.pop_back();
 	}
+}
+
+void Graphics::EnableImgui() noexcept
+{
+	imguiEnabled = true;
+}
+
+void Graphics::DisableImgui() noexcept
+{
+	imguiEnabled = false;
+}
+
+bool Graphics::IsImguiEnabled() const noexcept
+{
+	return imguiEnabled;
 }
 
 const char* Graphics::HrException::what() const noexcept

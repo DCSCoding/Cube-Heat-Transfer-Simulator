@@ -123,9 +123,6 @@
     <ClCompile Include="ImguiManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PointLight.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="AirCube.cpp">
       <Filter>Source Files\Cubes</Filter>
     </ClCompile>
@@ -314,9 +311,6 @@
     <ClInclude Include="ImguiManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PointLight.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Surface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -385,6 +379,12 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="chili.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\kappa50.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\cube.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

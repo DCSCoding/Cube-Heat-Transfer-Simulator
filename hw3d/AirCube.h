@@ -5,4 +5,5 @@ class AirCube: public Logical_Cube{
 public:
 	AirCube();
 	AirCube(float temperature);
+	
 };

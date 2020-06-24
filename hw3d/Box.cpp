@@ -127,10 +127,10 @@ void Box::Update( float dt ) noexcept
 DirectX::XMMATRIX Box::GetTransformXM() const noexcept
 {
 	namespace dx = DirectX;
-	return dx::XMLoadFloat3x3( &mt ) *
+	return dx::XMLoadFloat3x3(&mt) *
 		//dx::XMMatrixRotationRollPitchYaw(theta, phi, chi)*
-		dx::XMMatrixTranslation( x,y,z) *
-		dx::XMMatrixTranslation( -4.5f,-4.5f,10.0f );
+		dx::XMMatrixTranslation(x, y, z);
+		//dx::XMMatrixTranslation(0.0f, 0.0f, 20.0f);
 }
 
 PixelShaderConstants Box::GetPixelShaderConstants() const noexcept {

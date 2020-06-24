@@ -80,9 +80,10 @@ App::App()
 		}
 	}
 
-	const auto s = Surface::FromFile("Images\\kappa50.png");
+	//const auto s = Surface::FromFile("Images\kappa50.png");
 
 	wnd.Gfx().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
+	
 }
 
 void App::DoFrame()
@@ -90,24 +91,30 @@ void App::DoFrame()
 
 	ts.update(ts.cubes2);
 	const auto dt = timer.Mark();
-	wnd.Gfx().ClearBuffer(0.07f, 0.0f, 0.12f);
+
+	if (wnd.kbd.KeyIsPressed(VK_SPACE)) {
+		wnd.Gfx().DisableImgui();
+	}
+	else {
+		wnd.Gfx().EnableImgui();
+	}
+
+	
+	
+	wnd.Gfx().BeginFrame(0.07f, 0.0f, 0.12f);
+	wnd.Gfx().SetCamera(cam.GetMatrix());
 	for (auto& d : drawables)
 	{
 		d->Update(dt);
 		d->Draw(wnd.Gfx());
 	}
 
-	ImGui_ImplDX11_NewFrame();
-	ImGui_ImplWin32_NewFrame();
-	ImGui::NewFrame();
-
-	static bool show_demo_window = true;
 	if (show_demo_window) {
 		ImGui::ShowDemoWindow(&show_demo_window);
 	}
-	ImGui::Render();
-	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-
+	
+	cam.SpawnControlWindow();
+	CubeMenu();
 	//present
 	wnd.Gfx().EndFrame();
 
@@ -130,4 +137,14 @@ int App::Go()
 		}
 		DoFrame();
 	}
+}
+
+void App::CubeMenu() {
+	
+	if (ImGui::Begin("Cube Menu"))
+	{
+		ImGui::SliderFloat("Cube 0, 0, 0 temp: ", &ts.cubes2[0][0][0]->temperature, 0.0f, 1000.0f);
+		
+	};
+	ImGui::End();
 }

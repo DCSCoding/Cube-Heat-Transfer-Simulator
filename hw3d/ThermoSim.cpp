@@ -30,11 +30,11 @@ ThermoSim::ThermoSim(size_t width1, size_t length1, size_t height1) :
 	for (int x = 0; x < width; x++) {
 		for (int y = 0; y < length; y++) {
 			for (int z = 0; z < height; z++) {
-				if ((z == 5 && y == 5 && x == 5)) {
-					cubes[x][y].push_back(GoldCube(1000));
-				}
+				if ((z <= 5 && y <= 5 && x <= 5)) {
+					cubes[x][y].push_back(AirCube(1000));
+				}	
 				else {
-					cubes[x][y].push_back(AirCube(200));
+					cubes[x][y].push_back(AirCube(0));
 				}
 				//cubes[x][y].push_back(AirCube(random_int(rg)));
 				index++;
