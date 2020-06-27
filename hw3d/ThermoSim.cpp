@@ -57,7 +57,7 @@ void ThermoSim::getNewState(std::vector<std::vector<std::vector<Logical_Cube>>> 
     
 	
 	
-	update(cubes2);
+	//update(cubes2);
 	
 	
 
