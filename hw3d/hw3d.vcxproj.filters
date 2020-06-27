@@ -186,6 +186,9 @@
     <ClCompile Include="Cubependium.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="NonStaticBox.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WindowsMessageMap.h">
@@ -376,6 +379,9 @@
     </ClInclude>
     <ClInclude Include="Cubependium.h">
       <Filter>Header Files\Cubes</Filter>
+    </ClInclude>
+    <ClInclude Include="NonStaticBox.h">
+      <Filter>Header Files\Drawable</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

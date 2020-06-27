@@ -1,10 +1,14 @@
 #include "Logical_Cube.h"
 #include "GoldCube.h"
 
-GoldCube::GoldCube() :
-	Logical_Cube(273)
+GoldCube::GoldCube(Cubependium* cubependium) :
+	Logical_Cube(273, cubependium)
 {}
 
-GoldCube::GoldCube(float temperature) :
-	Logical_Cube(temperature)
-{}
+GoldCube::GoldCube(float temperature, Cubependium* cubependium) :
+	Logical_Cube(temperature, cubependium)
+{
+	id = 1;
+	energy_content = cp->getTypeData(id).mass * cp->getTypeData(id).specific_heat * temperature;
+	setState(temperature);
+}

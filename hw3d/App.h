@@ -13,7 +13,7 @@ public:
 	int Go();
 	~App();
 private:
-	void DoFrame();
+	void DoFrame(size_t framecount);
 	void CubeMenu();
 private:
 	bool show_demo_window = true;

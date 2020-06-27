@@ -5,6 +5,7 @@
 #include "Logical_Cube.h"
 #include "AirCube.h"
 #include "GoldCube.h"
+#include "IronCube.h"
 #include <vector>
 #include <random>
 #include <ctime>
@@ -29,11 +30,11 @@ ThermoSim::ThermoSim(size_t width1, size_t length1, size_t height1) :
 	for (int x = 0; x < width; x++) {
 		for (int y = 0; y < length; y++) {
 			for (int z = 0; z < height; z++) {
-				if ((z <= 5 && y <= 5 && x <= 5)) {
-					cubes[x][y].push_back(AirCube(1000));
+				if ((z <= 0 && y <= 0 && x <= 0)) {
+					cubes[x][y].push_back(GoldCube(1000, &cp));
 				}	
 				else {
-					cubes[x][y].push_back(AirCube(0));
+					cubes[x][y].push_back(AirCube(0, &cp));
 				}
 				//cubes[x][y].push_back(AirCube(random_int(rg)));
 				index++;
@@ -50,19 +51,13 @@ ThermoSim::ThermoSim(size_t width1, size_t length1, size_t height1) :
 		}
 	};
 	
+	setNeighborMap(cubes2);
 	
 }
 void ThermoSim::getNewState(std::vector<std::vector<std::vector<Logical_Cube>>> cubes, std::vector<std::vector<std::vector<Logical_Cube*>>> cubes2)
 {
-    
-	
-	
-	//update(cubes2);
-	
-	
-
-	//std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
-    
+    update(cubes2);
+	   
 }
 
 void ThermoSim::update(std::vector<std::vector<std::vector<Logical_Cube*>>> cubes) {
@@ -130,9 +125,30 @@ void ThermoSim::update(std::vector<std::vector<std::vector<Logical_Cube*>>> cube
 
 }
 
+void ThermoSim::updateAdjacent(std::vector<std::vector<std::vector<Logical_Cube*>>> cubes) {
+	std::vector<Logical_Cube*> neighbors;
+	for (int x = 0; x < cubes.size(); x++) {
+		for (int y = 0; y < cubes[x].size(); y++) {
+			for (int z = 0; z < cubes[x][y].size(); z++) {
+				/*std::vector<Logical_Cube*> neighbors;
+				if (x - 1 >= 0) neighbors.push_back(cubes[x - 1][y][z]);
+				if (y - 1 >= 0) neighbors.push_back(cubes[x][y - 1][z]);
+				if (z - 1 >= 0) neighbors.push_back(cubes[x][y][z - 1]);
+				if (x + 1 < cubes[x][y].size()) neighbors.push_back(cubes[x + 1][y][z]);
+				if (y + 1 < cubes[x].size()) neighbors.push_back(cubes[x][y + 1][z]);
+				if (z + 1 < cubes[x][y].size()) neighbors.push_back(cubes[x][y][z + 1]);*/
+				neighbors = neighbor_map[cubes[x][y][z]];
+				updateNeighbors(cubes[x][y][z], neighbors);
+
+			}
+		}
+	}
+	
+}
+
 void ThermoSim::updateNeighbors(Logical_Cube* cube, std::vector<Logical_Cube*> neighbors) {
 
-	int scaler = 100;
+	int scaler = 300;
 
 	std::vector<float> transfer_rate;
 
@@ -146,5 +162,27 @@ void ThermoSim::updateNeighbors(Logical_Cube* cube, std::vector<Logical_Cube*> n
 		neighbors[i]->update(transfer_rate[i]);
 	}
 
+}
+
+void ThermoSim::setNeighborMap(std::vector<std::vector<std::vector<Logical_Cube*>>> cubes) {
+	
+	for (int x = 0; x < cubes.size(); x++) {
+		for (int y = 0; y < cubes[x].size(); y++) {
+			for (int z = 0; z < cubes[x][y].size(); z++) {
+				std::vector<Logical_Cube*> neighbors;
+				if (x - 1 >= 0) neighbors.push_back(cubes[x - 1][y][z]);
+				if (y - 1 >= 0) neighbors.push_back(cubes[x][y - 1][z]);
+				if (z - 1 >= 0) neighbors.push_back(cubes[x][y][z - 1]);
+				if (x + 1 < cubes.size()) neighbors.push_back(cubes[x + 1][y][z]);
+				if (y + 1 < cubes[x].size()) neighbors.push_back(cubes[x][y + 1][z]);
+				if (z + 1 < cubes[x][y].size()) neighbors.push_back(cubes[x][y][z + 1]);
+
+				neighbor_map[cubes[x][y][z]] = neighbors;
+
+			}
+		}
+	}
+
+	
 }
 

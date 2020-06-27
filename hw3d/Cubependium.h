@@ -1,80 +1,104 @@
 #pragma once
 
-static class Cubependium {
+class Cubependium {
 public:
 	Cubependium();
-	struct  LogicalCube {
-		const float volume = 1000000.0f;
-		const float density = 1.0f;
-		const float mass = density * volume;
-		const float conductivity = 10.0f;
-		const float specific_heat = 1.0f;
-		const float melting_point = 373.0f;
-		const float boiling_point = 573.0f;
-	} lc;
-	struct GoldCube : LogicalCube {
-		const float volume = 1000000.0f;
-		const float density = 19.3f;
-		const float mass = density * volume;
-		const float conductivity = .129f;
-		const float specific_heat = 314.0f;
-		const float melting_point = 1064.0f + 273.0f;
-		const float boiling_point = 2700.0f + 273.0f;
-	} gc;
-	struct IronCube : LogicalCube {
-		const float volume = 1000000.0f;
-		const float density = 7.9f;
-		const float mass = density*volume;
-		const float conductivity = .45f;
-		const float specific_heat = 79.5f;
-		const float melting_point = 1538.0f+273.0f;
-		const float boiling_point = 2862.0f+273.0f;
-	} ic;
-	struct InsulatorCube : LogicalCube {
-		const float volume = 1000000.0f;
-		const float density = 19.3f;
-		const float mass = density*volume;
-		const float conductivity = 0.0f;
-		const float specific_heat = 100.0f;
-		const float melting_point = 10000.0f;
-		const float boiling_point = 100000.0f;
-	} inc;
-	struct AirCube : LogicalCube {
-		const float volume = 1000000.0f;
-		const float density = .0013f;
-		const float mass = density*volume;
-		const float conductivity = .024f;
-		const float specific_heat = 1.0f;
-		const float melting_point = 0.0f;
-		const float boiling_point = 0.0f;
-	} ac;
-	struct VacuumCube : LogicalCube {
-		const float volume = 1000000.0f;
-		const float density = 0;
-		const float mass = 0;
-		const float conductivity = 0;
-		const float specific_heat = 0;
-		const float melting_point = 0;
-		const float boiling_point = 0;
-	} vc;
+	struct Cube_Data {
+		 size_t type_id;
+		 float volume;
+		 float density;
+		 float mass = density * volume;
+		 float conductivity;
+		 float specific_heat;
+		 float melting_point;
+		 float boiling_point;
+	};
+	Cube_Data lc = {
+		 1,
+		 1000000.0f,
+		 1.0f,
+		 1000000.0f * 1.0f,
+		 100.0f,
+		 1.0f,
+		 1000.0f,
+		 2700.0f + 273.0f
+	};
+	Cube_Data gc = {
+		 1,
+		 1000000.0f,
+		 19.3f,
+		 1000000.0f * 19.3,
+		 314.0f,
+		 .129,
+		 1064.0f + 273.0f,
+		 2700.0f + 273.0f
+	};
+	Cube_Data ic{
+		 2,
+		 1000000.0f,
+		 7.9f,
+		 1000000.0f * 7.9f,
+		 79.5f,
+		 .45f,
+		 1538.0f + 273.0f,
+		 2862.0f + 273.0f
+	};
+	Cube_Data inc{
+		 3,
+		 1000000.0f,
+		 19.3f,
+		 1000000.0f * 19.3,
+		 0.0f,
+		 100.0f,
+		 10000.0f,
+		 100000.0f
+	};
+	Cube_Data ac{
+		 4,
+		 1000000.0f,
+		 .0013f,
+		 1000000.0f * .0013,
+		 .024f,
+		 1.0f,
+		 0.0f,
+		 0.0f
+	};
+	Cube_Data vc{
+		 5,
+		 1000000.0f,
+		 0,
+		 0,
+		 0,
+		 0,
+		 0,
+		 0
+	};
 	
 
-	LogicalCube& getTypeData(size_t id) {
+	Cube_Data& getTypeData(size_t id){
+
 		switch (id) {
 		case 0:
 			return Cubependium::lc;
+			break;
 		case 1:
 			return Cubependium::gc;
+			break;
 		case 2: 
-			return Cubependium::ac;
+			return Cubependium::inc;
+			break;
 		case 3:
 			return Cubependium::ic;
+			break;
 		case 4:
-			return Cubependium::inc;
+			return Cubependium::ac;
+			break;
 		case 5: 
 			return Cubependium::vc;
+			break;
+		default: 
+			return Cubependium::gc;
 		}
 	}
-
 
 };

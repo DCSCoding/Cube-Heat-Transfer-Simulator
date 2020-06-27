@@ -176,6 +176,7 @@
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="Melon.cpp" />
     <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="NonStaticBox.cpp" />
     <ClCompile Include="PixelShader.cpp" />
     <ClCompile Include="Pyramid.cpp" />
     <ClCompile Include="Sampler.cpp" />
@@ -236,6 +237,7 @@
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Melon.h" />
     <ClInclude Include="Mouse.h" />
+    <ClInclude Include="NonStaticBox.h" />
     <ClInclude Include="PixelShader.h" />
     <ClInclude Include="PixelShaderConstants.h" />
     <ClInclude Include="Plane.h" />

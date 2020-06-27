@@ -2,20 +2,28 @@
 #include <iostream>
 
 Logical_Cube::Logical_Cube() :
-	temperature(273)
-	{
+temperature(273)
+{
+
+}
+Logical_Cube::Logical_Cube(Cubependium* cubependium) :
+	temperature(273),
+	cp(cubependium)
+{
+	
 	setState(temperature);
 	}
 
-Logical_Cube::Logical_Cube(float temperature) :
-	temperature(temperature)
+Logical_Cube::Logical_Cube(float temperature, Cubependium* cubependium) :
+	temperature(temperature),
+	cp(cubependium)
 {
-	energy_content = cp.getTypeData(id).mass * cp.getTypeData(id).specific_heat * temperature;
+	energy_content = cp->getTypeData(id).mass * cp->getTypeData(id).specific_heat * temperature;
 	setState(temperature);
 	}
 
 float Logical_Cube::getConductivity() {
-	return cp.getTypeData(id).conductivity;
+	return cp->getTypeData(id).conductivity;
 	}
 
 float Logical_Cube::getTemperature() {
@@ -23,15 +31,15 @@ float Logical_Cube::getTemperature() {
 	}
 
 float  Logical_Cube::getSpecificHeat() {
-	return cp.getTypeData(id).specific_heat;
+	return cp->getTypeData(id).specific_heat;
 	}
 
 float  Logical_Cube::getMass() {
-	return cp.getTypeData(id).mass;
+	return cp->getTypeData(id).mass;
 	}
 
 float  Logical_Cube::getDensity() {
-	return cp.getTypeData(id).density;
+	return cp->getTypeData(id).density;
 	}
 
 float  Logical_Cube::getEnergyContent() {
@@ -40,7 +48,7 @@ float  Logical_Cube::getEnergyContent() {
 
 float  Logical_Cube::getEnergyContent(float temp) {
 	//Returns this Logical_Cubes energy content at a given temperature.
-	return cp.getTypeData(id).mass * cp.getTypeData(id).specific_heat * temp;
+	return cp->getTypeData(id).mass * cp->getTypeData(id).specific_heat * temp;
 	}
 
 size_t  Logical_Cube::getState() {
@@ -48,10 +56,10 @@ size_t  Logical_Cube::getState() {
 	}
 
 void  Logical_Cube::setState(float temperature) {
-	if (temperature > cp.getTypeData(id).boiling_point) {
+	if (temperature > cp->getTypeData(id).boiling_point) {
 		state = 2;
 		}
-	else if (temperature > cp.getTypeData(id).melting_point) {
+	else if (temperature > cp->getTypeData(id).melting_point) {
 		state = 1;
 		}
 	else {
@@ -60,10 +68,9 @@ void  Logical_Cube::setState(float temperature) {
 	}
 
 void Logical_Cube::update(float energy) {
-		//System.out.println("Adding " + energy);
-		float m = temperature;
+		
 		energy_content += energy;
-		temperature = energy_content / cp.getTypeData(id).mass / cp.getTypeData(id).specific_heat;
+		temperature = energy_content / cp->getTypeData(id).mass / cp->getTypeData(id).specific_heat;
 		setState(temperature);
 
 }

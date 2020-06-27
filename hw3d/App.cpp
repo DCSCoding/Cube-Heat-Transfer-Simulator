@@ -14,7 +14,7 @@
 #include "imgui/imgui_impl_win32.h"
 #include "imgui/imgui_impl_dx11.h"
 
-ThermoSim ts(10, 10, 10);
+ThermoSim ts(16, 16, 16);
 long duration = 0;
 App::App()
 	:
@@ -76,24 +76,26 @@ App::App()
 				float fx = float(x);
 				float fy = float(y);
 				float fz = float(z);
-				drawables.push_back(std::make_unique<Box>(wnd.Gfx(), fx, fy, fz, ts, 0.0f, 0.0f, 0.0f));
+
+
+				size_t id = ts.cubes2[x][y][z]->id;
+				
+				
+				
+				drawables.push_back(std::make_unique<Box>(wnd.Gfx(), id, fx, fy, fz, ts, 0.0f, 0.0f, 0.0f));
 			}
 		}
 	}
 
-	//const auto s = Surface::FromFile("Images\kappa50.png");
+	// auto s = Surface::FromFile("Images\kappa50.png");
 
 	wnd.Gfx().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
 	
 }
 
-void App::DoFrame()
+void App::DoFrame(size_t framecount)
 {
-	auto t1 = std::chrono::high_resolution_clock::now();
-	ts.update(ts.cubes2);
-	auto t2 = std::chrono::high_resolution_clock::now();
-	duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
-
+	
 	const auto dt = timer.Mark();
 
 	if (wnd.kbd.KeyIsPressed(VK_SPACE)) {
@@ -130,7 +132,7 @@ App::~App()
 
 int App::Go()
 {
-
+	size_t framecount = 0;
 	while (true)
 	{
 		// process all messages pending, but to not block for new messages
@@ -139,7 +141,15 @@ int App::Go()
 			// if return optional has value, means we're quitting so return exit code
 			return *ecode;
 		}
-		DoFrame();
+		DoFrame(framecount);
+		framecount++;
+		if (framecount == 30) {
+			auto t1 = std::chrono::high_resolution_clock::now();
+			ts.updateAdjacent(ts.cubes2);
+			auto t2 = std::chrono::high_resolution_clock::now();
+			duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
+			framecount = 0;
+		}
 	}
 }
 

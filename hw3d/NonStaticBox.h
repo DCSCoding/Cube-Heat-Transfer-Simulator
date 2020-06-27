@@ -3,12 +3,12 @@
 #include "ThermoSim.h"
 #include "PixelShaderConstants.h"
 
-class Box : public DrawableBase<Box>
+class NonStaticBox : public DrawableBase<NonStaticBox>
 {
 public:
-	Box( Graphics& gfx, size_t type, float xdis, float ydis, float zdis,
+	NonStaticBox(Graphics& gfx, size_t type, float xdis, float ydis, float zdis,
 		ThermoSim& rts, float chi, float theta, float phi);
-	void Update( float dt ) noexcept override;
+	void Update(float dt) noexcept override;
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
 	PixelShaderConstants GetPixelShaderConstants() const noexcept override;
 	size_t box_type;
