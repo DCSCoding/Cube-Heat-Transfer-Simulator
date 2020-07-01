@@ -1,11 +1,11 @@
-#include "NonStaticBox.h"
+#include "WaterBox.h"
 #include "BindableBase.h"
 #include "GraphicsThrowMacros.h"
 #include "Cube.h"
 #include "ThermoSim.h"
 
 
-NonStaticBox::NonStaticBox(Graphics& gfx, size_t type, float xdis, float ydis, float zdis,
+WaterBox::WaterBox(Graphics& gfx, size_t type, float xdis, float ydis, float zdis,
 	ThermoSim& rts, float chi1, float theta1, float phi1)
 	:
 	box_type(type),
@@ -62,23 +62,32 @@ NonStaticBox::NonStaticBox(Graphics& gfx, size_t type, float xdis, float ydis, f
 		} face_colors[8];
 	};
 
-
-	float temp = ts.cubes[x][y][z].getTemperature() / 1000.0f;
+	
+	float temperature = ts.cubes[x][y][z].getTemperature();
+	float temp = 0;
+	if (temperature < 323) {
+		temp = 0;
+	}
+	else {
+		temp = (temperature / 1000 - .323) + (.02 * (temperature - 323));
+	}
 	
 	const PixelShaderConstants cb2 =
 	{
 		{
-			{ temp,temp,temp },
-			{ temp,temp,temp },
-			{ temp,temp,temp },
-			{ temp,temp,temp },
-			{ temp,temp,temp },
-			{ temp,temp,temp },
-			{ temp,temp,temp },
-			{ temp,temp,temp },
+			{ temp,temp,1 },
+			{ temp,temp,1 },
+			{ temp,temp,1 },
+			{ temp,temp,1 },
+			{ temp,temp,1 },
+			{ temp,temp,1 },
+			{ temp,temp,1 },
+			{ temp,temp,1 },
 		}
 	};
+	
 	AddBind(std::make_unique<PixelConstantBuffer<PixelShaderConstants>>(gfx, cb2));
+	
 
 	AddBind(std::make_unique<TransformPSConstants>(gfx, *this));
 
@@ -93,7 +102,7 @@ NonStaticBox::NonStaticBox(Graphics& gfx, size_t type, float xdis, float ydis, f
 	);
 }
 
-void NonStaticBox::Update(float dt) noexcept
+void WaterBox::Update(float dt) noexcept
 {
 
 	theta += 1.0f * dt;
@@ -101,7 +110,7 @@ void NonStaticBox::Update(float dt) noexcept
 	chi += 1.0f * dt;
 }
 
-DirectX::XMMATRIX NonStaticBox::GetTransformXM() const noexcept
+DirectX::XMMATRIX WaterBox::GetTransformXM() const noexcept
 {
 	namespace dx = DirectX;
 	return dx::XMLoadFloat3x3(&mt) *
@@ -110,20 +119,26 @@ DirectX::XMMATRIX NonStaticBox::GetTransformXM() const noexcept
 	//dx::XMMatrixTranslation(0.0f, 0.0f, 20.0f);
 }
 
-PixelShaderConstants NonStaticBox::GetPixelShaderConstants() const noexcept {
-
-	float temp = ts.cubes[x][y][z].getTemperature() / 1000.0f;
+PixelShaderConstants WaterBox::GetPixelShaderConstants() const noexcept {
+	float temperature = ts.cubes[x][y][z].getTemperature();
+	float temp = 0;
+	if (temperature < 323) {
+		temp = 0;
+	}
+	else {
+		temp = (temperature/1000 -.323) + (.02*(temperature-323));
+	}
 	const PixelShaderConstants cb2 =
 	{
 		{
-			{ temp,temp,temp },
-			{ temp,temp,temp },
-			{ temp,temp,temp },
-			{ temp,temp,temp },
-			{ temp,temp,temp },
-			{ temp,temp,temp },
-			{ temp,temp,temp },
-			{ temp,temp,temp },
+			{ temp,temp,1 },
+			{ temp,temp,1 },
+			{ temp,temp,1 },
+			{ temp,temp,1 },
+			{ temp,temp,1 },
+			{ temp,temp,1 },
+			{ temp,temp,1 },
+			{ temp,temp,1 },
 		}
 	};
 	return cb2;

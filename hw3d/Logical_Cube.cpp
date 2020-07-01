@@ -51,6 +51,26 @@ float  Logical_Cube::getEnergyContent(float temp) {
 	return cp->getTypeData(id).mass * cp->getTypeData(id).specific_heat * temp;
 	}
 
+size_t Logical_Cube::getType()
+{
+	return id;
+}
+
+void Logical_Cube::setEnergyContent(float energy)
+{
+	energy_content = energy;
+}
+
+void Logical_Cube::setType(size_t type)
+{
+	id = type;
+}
+
+void Logical_Cube::updateTemperature()
+{
+	temperature = energy_content / cp->getTypeData(id).mass / cp->getTypeData(id).specific_heat;
+}
+
 size_t  Logical_Cube::getState() {
 	return state;
 	}

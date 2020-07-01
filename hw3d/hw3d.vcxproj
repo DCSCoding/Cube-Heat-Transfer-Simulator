@@ -156,6 +156,7 @@
     <ClCompile Include="ChiliTimer.cpp" />
     <ClCompile Include="Cubependium.cpp" />
     <ClCompile Include="GDIPlusManager.cpp" />
+    <ClCompile Include="GoldBox.cpp" />
     <ClCompile Include="ImguiManager.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
@@ -163,6 +164,7 @@
     <ClCompile Include="imgui\imgui_impl_dx11.cpp" />
     <ClCompile Include="imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
+    <ClCompile Include="IronBox.cpp" />
     <ClCompile Include="Logical_Cube.cpp" />
     <ClCompile Include="Drawable.cpp" />
     <ClCompile Include="dxerr.cpp" />
@@ -192,6 +194,8 @@
     <ClCompile Include="VacuumCube.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
     <ClCompile Include="VertexShader.cpp" />
+    <ClCompile Include="WaterBox.cpp" />
+    <ClCompile Include="WaterCube.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="WindowsMessageMap.cpp" />
     <ClCompile Include="WinMain.cpp" />
@@ -212,6 +216,7 @@
     <ClInclude Include="Cube.h" />
     <ClInclude Include="Cubependium.h" />
     <ClInclude Include="GDIPlusManager.h" />
+    <ClInclude Include="GoldBox.h" />
     <ClInclude Include="ImguiManager.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
@@ -221,6 +226,7 @@
     <ClInclude Include="imgui\imstb_rectpack.h" />
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
+    <ClInclude Include="IronBox.h" />
     <ClInclude Include="Logical_Cube.h" />
     <ClInclude Include="Drawable.h" />
     <ClInclude Include="DrawableBase.h" />
@@ -258,6 +264,8 @@
     <ClInclude Include="VacuumCube.h" />
     <ClInclude Include="VertexBuffer.h" />
     <ClInclude Include="VertexShader.h" />
+    <ClInclude Include="WaterBox.h" />
+    <ClInclude Include="WaterCube.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="WindowsMessageMap.h" />
     <ClInclude Include="WindowsThrowMacros.h" />

@@ -14,7 +14,7 @@ public:
 		 float boiling_point;
 	};
 	Cube_Data lc = {
-		 1,
+		 0,
 		 1000000.0f,
 		 1.0f,
 		 1000000.0f * 1.0f,
@@ -73,6 +73,16 @@ public:
 		 0,
 		 0
 	};
+	Cube_Data wc{
+		 6,
+		 1000000.0f,
+		 1.0,
+		 1000000.0f,
+		 .6f,
+		 4.2f,
+		 273.0f,
+		 100.0f+273.0f
+	};
 	
 
 	Cube_Data& getTypeData(size_t id){
@@ -85,16 +95,19 @@ public:
 			return Cubependium::gc;
 			break;
 		case 2: 
-			return Cubependium::inc;
+			return Cubependium::ic;
 			break;
 		case 3:
-			return Cubependium::ic;
+			return Cubependium::inc;
 			break;
 		case 4:
 			return Cubependium::ac;
 			break;
 		case 5: 
 			return Cubependium::vc;
+			break;
+		case 6:
+			return Cubependium::wc;
 			break;
 		default: 
 			return Cubependium::gc;

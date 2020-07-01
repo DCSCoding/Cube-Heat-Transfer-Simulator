@@ -1,11 +1,11 @@
-#include "NonStaticBox.h"
+#include "IronBox.h"
 #include "BindableBase.h"
 #include "GraphicsThrowMacros.h"
 #include "Cube.h"
 #include "ThermoSim.h"
 
 
-NonStaticBox::NonStaticBox(Graphics& gfx, size_t type, float xdis, float ydis, float zdis,
+IronBox::IronBox(Graphics& gfx, size_t type, float xdis, float ydis, float zdis,
 	ThermoSim& rts, float chi1, float theta1, float phi1)
 	:
 	box_type(type),
@@ -62,20 +62,26 @@ NonStaticBox::NonStaticBox(Graphics& gfx, size_t type, float xdis, float ydis, f
 		} face_colors[8];
 	};
 
-
-	float temp = ts.cubes[x][y][z].getTemperature() / 1000.0f;
+	float temp = 0;
+	float temperature = ts.cubes[x][y][z].getTemperature();
+	if (temperature < 273) {
+		temp = 0;
+	}
+	else {
+		temp = (temperature / 1000 - .273) + (.727 * (temperature - 273));
+	}
 	
 	const PixelShaderConstants cb2 =
 	{
 		{
-			{ temp,temp,temp },
-			{ temp,temp,temp },
-			{ temp,temp,temp },
-			{ temp,temp,temp },
-			{ temp,temp,temp },
-			{ temp,temp,temp },
-			{ temp,temp,temp },
-			{ temp,temp,temp },
+			{ .6 + temp,.6,.6 },
+			{ .6 + temp,.6,.6 },
+			{ .6 + temp,.6,.6 },
+			{ .6 + temp,.6,.6 },
+			{ .6 + temp,.6,.6 },
+			{ .6 + temp,.6,.6 },
+			{ .6 + temp,.6,.6 },
+			{ .6 + temp,.6,.6 },
 		}
 	};
 	AddBind(std::make_unique<PixelConstantBuffer<PixelShaderConstants>>(gfx, cb2));
@@ -93,7 +99,7 @@ NonStaticBox::NonStaticBox(Graphics& gfx, size_t type, float xdis, float ydis, f
 	);
 }
 
-void NonStaticBox::Update(float dt) noexcept
+void IronBox::Update(float dt) noexcept
 {
 
 	theta += 1.0f * dt;
@@ -101,7 +107,7 @@ void NonStaticBox::Update(float dt) noexcept
 	chi += 1.0f * dt;
 }
 
-DirectX::XMMATRIX NonStaticBox::GetTransformXM() const noexcept
+DirectX::XMMATRIX IronBox::GetTransformXM() const noexcept
 {
 	namespace dx = DirectX;
 	return dx::XMLoadFloat3x3(&mt) *
@@ -110,20 +116,27 @@ DirectX::XMMATRIX NonStaticBox::GetTransformXM() const noexcept
 	//dx::XMMatrixTranslation(0.0f, 0.0f, 20.0f);
 }
 
-PixelShaderConstants NonStaticBox::GetPixelShaderConstants() const noexcept {
+PixelShaderConstants IronBox::GetPixelShaderConstants() const noexcept {
 
-	float temp = ts.cubes[x][y][z].getTemperature() / 1000.0f;
+	float temperature = ts.cubes[x][y][z].getTemperature();
+	float temp = 0;
+	if (temperature < 273) {
+		temp = 0;
+	}
+	else {
+		temp = (temperature / 1000 - .273) + (.727 * (temperature - 273));
+	}
 	const PixelShaderConstants cb2 =
 	{
 		{
-			{ temp,temp,temp },
-			{ temp,temp,temp },
-			{ temp,temp,temp },
-			{ temp,temp,temp },
-			{ temp,temp,temp },
-			{ temp,temp,temp },
-			{ temp,temp,temp },
-			{ temp,temp,temp },
+			{ .6 + temp,.6,.6 },
+			{ .6 + temp,.6,.6 },
+			{ .6 + temp,.6,.6 },
+			{ .6 + temp,.6,.6 },
+			{ .6 + temp,.6,.6 },
+			{ .6 + temp,.6,.6 },
+			{ .6 + temp,.6,.6 },
+			{ .6 + temp,.6,.6 },
 		}
 	};
 	return cb2;

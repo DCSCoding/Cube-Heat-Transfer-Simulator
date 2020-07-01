@@ -13,11 +13,13 @@ public:
 	std::vector<std::vector<std::vector<Logical_Cube>>> cubes;
 	std::vector<std::vector<std::vector<Logical_Cube*>>> cubes2;
 	Cubependium cp;
-	void update(std::vector<std::vector<std::vector<Logical_Cube*>>> cubes);
+	/*void update(std::vector<std::vector<std::vector<Logical_Cube*>>> cubes);*/
 	void updateAdjacent(std::vector<std::vector<std::vector<Logical_Cube*>>> cubes);
-private:
-	void updateNeighbors(Logical_Cube* cube, std::vector<Logical_Cube*> neighbors);
 	void setNeighborMap(std::vector<std::vector<std::vector<Logical_Cube*>>> cubes);
+	void checkActive(Logical_Cube* cube, std::vector<Logical_Cube*> neighbors);
+private:
+	void updateNeighbors(Logical_Cube* cube, std::vector<Logical_Cube*> neighbors, std::unordered_map<Logical_Cube*, bool>& has_moved);
+	
 	std::unordered_map<Logical_Cube*, std::vector<Logical_Cube*>> neighbor_map;
 
 };

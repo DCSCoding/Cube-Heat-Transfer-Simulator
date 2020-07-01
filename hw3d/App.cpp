@@ -1,4 +1,8 @@
 #include "App.h"
+#include "NonStaticBox.h"
+#include "GoldBox.h"
+#include "IronBox.h"
+#include "WaterBox.h"
 #include "Melon.h"
 #include "Pyramid.h"
 #include "Box.h"
@@ -14,7 +18,7 @@
 #include "imgui/imgui_impl_win32.h"
 #include "imgui/imgui_impl_dx11.h"
 
-ThermoSim ts(16, 16, 16);
+ThermoSim ts(100, 100, 100);
 long duration = 0;
 App::App()
 	:
@@ -77,19 +81,32 @@ App::App()
 				float fy = float(y);
 				float fz = float(z);
 
-
 				size_t id = ts.cubes2[x][y][z]->id;
 				
+				switch (id) {
+				case 1 :
+					drawables.push_back(std::make_unique<GoldBox>(wnd.Gfx(), id, fx, fy, fz, ts, 0.0f, 0.0f, 0.0f));
+					break;
+				case 2:
+					drawables.push_back(std::make_unique<IronBox>(wnd.Gfx(), id, fx, fy, fz, ts, 0.0f, 0.0f, 0.0f));
+					break;
+				case 3:
+					//drawables.push_back(std::make_unique<InsulatorBox>(wnd.Gfx(), id, fx, fy, fz, ts, 0.0f, 0.0f, 0.0f));
+					break;
+				case 4:
+					//drawables.push_back(std::make_unique<NonStaticBox>(wnd.Gfx(), id, fx, fy, fz, ts, 0.0f, 0.0f, 0.0f));
+					break;
+				case 6:
+					drawables.push_back(std::make_unique<WaterBox>(wnd.Gfx(), id, fx, fy, fz, ts, 0.0f, 0.0f, 0.0f));
+				}
 				
-				
-				drawables.push_back(std::make_unique<Box>(wnd.Gfx(), id, fx, fy, fz, ts, 0.0f, 0.0f, 0.0f));
 			}
 		}
 	}
 
 	// auto s = Surface::FromFile("Images\kappa50.png");
 
-	wnd.Gfx().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
+	wnd.Gfx().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 9.0f / 16.0f, 0.5f, 80.0f));
 	
 }
 
@@ -143,12 +160,16 @@ int App::Go()
 		}
 		DoFrame(framecount);
 		framecount++;
-		if (framecount == 30) {
+		if (framecount == 1) {
 			auto t1 = std::chrono::high_resolution_clock::now();
 			ts.updateAdjacent(ts.cubes2);
+			
 			auto t2 = std::chrono::high_resolution_clock::now();
 			duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
 			framecount = 0;
+		}
+		if (framecount == 60) {
+			ts.setNeighborMap(ts.cubes2);
 		}
 	}
 }
@@ -159,6 +180,15 @@ void App::CubeMenu() {
 	{
 		ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		ImGui::Text("%ld ms per cycle", duration);
+		for (int x = 0; x < ts.cubes.size(); x++) {
+			for (int y = 0; y < ts.cubes[x].size(); y++) {
+				for (int z = 0; z < ts.cubes[x][y].size(); z++) {
+					if(ts.cubes[x][y][z].id != 3)
+					ImGui::Text("Temperature: %.3f %u %i %i %i id: %i", ts.cubes[x][y][z].getTemperature(), ts.cubes[x][y][z].active, x, y, z, int(ts.cubes[x][y][z].id));
+				}
+			}
+		}
+		
 	};
 	ImGui::End();
 }

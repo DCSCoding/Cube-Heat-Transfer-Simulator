@@ -189,6 +189,18 @@
     <ClCompile Include="NonStaticBox.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
+    <ClCompile Include="GoldBox.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="IronBox.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="WaterCube.cpp">
+      <Filter>Source Files\Cubes</Filter>
+    </ClCompile>
+    <ClCompile Include="WaterBox.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WindowsMessageMap.h">
@@ -381,6 +393,18 @@
       <Filter>Header Files\Cubes</Filter>
     </ClInclude>
     <ClInclude Include="NonStaticBox.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="GoldBox.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="IronBox.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="WaterCube.h">
+      <Filter>Header Files\Cubes</Filter>
+    </ClInclude>
+    <ClInclude Include="WaterBox.h">
       <Filter>Header Files\Drawable</Filter>
     </ClInclude>
   </ItemGroup>

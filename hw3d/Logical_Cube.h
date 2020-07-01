@@ -12,6 +12,11 @@ public:
 	float getDensity();
 	float getEnergyContent();
 	float getEnergyContent(float temp);
+	bool active = true;
+	size_t getType();
+	void setEnergyContent(float energy);
+	void setType(size_t type);
+	void updateTemperature();
 	size_t getState();
 	size_t id = 0;
 	void update(float energy);

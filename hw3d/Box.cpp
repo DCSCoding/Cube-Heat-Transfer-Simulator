@@ -38,7 +38,6 @@ Box::Box(Graphics& gfx, size_t type, float xdis, float ydis, float zdis,
 
 		AddStaticBind(std::make_unique<PixelShader>(gfx, L"ColorIndexPS.cso"));
 
-		/*if (box_type == 4) {
 			struct PixelShaderConstants
 			{
 				struct
@@ -52,18 +51,17 @@ Box::Box(Graphics& gfx, size_t type, float xdis, float ydis, float zdis,
 			const PixelShaderConstants cb2 =
 			{
 				{
-					{ 1, 1, 1 },
-					{ 1, 1, 1 },
-					{ 1, 1, 1 },
-					{ 1, 1, 1 },
-					{ 1, 1, 1 },
-					{ 1, 1, 1 },
-					{ 1, 1, 1 },
-					{ 1, 1, 1 },
+					{ 0, 0, 0 },
+					{ 0, 0, 0 },
+					{ 0, 0, 0 },
+					{ 0, 0, 0 },
+					{ 0, 0, 0 },
+					{ 0, 0, 0 },
+					{ 0, 0, 0 },
+					{ 0, 0, 0 },
 				}
 			};
 			AddStaticBind(std::make_unique<PixelConstantBuffer<PixelShaderConstants>>(gfx, cb2));
-		}*/
 
 		const std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
 		{
@@ -78,47 +76,12 @@ Box::Box(Graphics& gfx, size_t type, float xdis, float ydis, float zdis,
 		SetIndexFromStatic();
 	}
 
-
-
-
-	struct PixelShaderConstants
-	{
-		struct
-		{
-			float r;
-			float g;
-			float b;
-			float a;
-		} face_colors[8];
-	};
-
-
-	float temp = ts.cubes[x][y][z].getTemperature() / 1000.0f;
-	const PixelShaderConstants cb2 =
-	{
-		{
-			{ temp,temp,temp },
-			{ temp,temp,temp },
-			{ temp,temp,temp },
-			{ temp,temp,temp },
-			{ temp,temp,temp },
-			{ temp,temp,temp },
-			{ temp,temp,temp },
-			{ temp,temp,temp },
-		}
-	};
-	AddBind(std::make_unique<PixelConstantBuffer<PixelShaderConstants>>(gfx, cb2));
-
-	AddBind(std::make_unique<TransformPSConstants>(gfx, *this));
-
-
-
 	AddBind(std::make_unique<TransformCbuf>(gfx, *this));
 
 	// model deformation transform (per instance, not stored as bind)
 	dx::XMStoreFloat3x3(
 		&mt,
-		dx::XMMatrixScaling(0.5f, 0.5f, 0.5f)
+		dx::XMMatrixScaling(1.0f, 1.0f, 1.0f)
 	);
 }
 
