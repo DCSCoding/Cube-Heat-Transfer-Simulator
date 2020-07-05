@@ -4,7 +4,7 @@
 class Logical_Cube {
 public:
 	Logical_Cube();
-	Logical_Cube(Cubependium*);
+	Logical_Cube(Cubependium*, short position);
 	float getConductivity();
 	float getTemperature();
 	float getSpecificHeat();
@@ -12,19 +12,22 @@ public:
 	float getDensity();
 	float getEnergyContent();
 	float getEnergyContent(float temp);
-	bool active = true;
-	size_t getType();
+	unsigned char getState();
+	short getType();
 	void setEnergyContent(float energy);
 	void setType(size_t type);
+	void setActive(bool activity_flag);
 	void updateTemperature();
-	size_t getState();
-	size_t id = 0;
 	void update(float energy);
+	bool isActive();
 	Cubependium* cp;
 protected:
-	size_t state;
+	short pos;
+	bool active = true;
+	short id = 0;
+	unsigned char state;
 	float temperature;
 	float energy_content;
-	Logical_Cube(float temperature, Cubependium*);
+	Logical_Cube(float temperature, Cubependium*, short position);
 	void setState(float temperature);
 };

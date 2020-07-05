@@ -3,5 +3,5 @@
 
 class VacuumCube : public Logical_Cube {
 public:
-	VacuumCube(Cubependium* cubependium);
+	VacuumCube(Cubependium* cubependium, short position);
 };

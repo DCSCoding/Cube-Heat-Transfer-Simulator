@@ -6,17 +6,19 @@ temperature(273)
 {
 
 }
-Logical_Cube::Logical_Cube(Cubependium* cubependium) :
+Logical_Cube::Logical_Cube(Cubependium* cubependium, short position) :
 	temperature(273),
-	cp(cubependium)
+	cp(cubependium),
+	pos(position)
 {
 	
 	setState(temperature);
 	}
 
-Logical_Cube::Logical_Cube(float temperature, Cubependium* cubependium) :
+Logical_Cube::Logical_Cube(float temperature, Cubependium* cubependium, short position) :
 	temperature(temperature),
-	cp(cubependium)
+	cp(cubependium),
+	pos(position)
 {
 	energy_content = cp->getTypeData(id).mass * cp->getTypeData(id).specific_heat * temperature;
 	setState(temperature);
@@ -51,7 +53,7 @@ float  Logical_Cube::getEnergyContent(float temp) {
 	return cp->getTypeData(id).mass * cp->getTypeData(id).specific_heat * temp;
 	}
 
-size_t Logical_Cube::getType()
+short Logical_Cube::getType()
 {
 	return id;
 }
@@ -66,14 +68,22 @@ void Logical_Cube::setType(size_t type)
 	id = type;
 }
 
+void Logical_Cube::setActive(bool activity_flag)
+{
+	active = activity_flag;
+}
+
 void Logical_Cube::updateTemperature()
 {
 	temperature = energy_content / cp->getTypeData(id).mass / cp->getTypeData(id).specific_heat;
 }
-
-size_t  Logical_Cube::getState() {
+unsigned char Logical_Cube::getState() {
 	return state;
 	}
+
+bool Logical_Cube::isActive() {
+	return active;
+}
 
 void  Logical_Cube::setState(float temperature) {
 	if (temperature > cp->getTypeData(id).boiling_point) {

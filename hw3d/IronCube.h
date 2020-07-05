@@ -3,6 +3,6 @@
 
 class IronCube : public Logical_Cube {
 public:
-	IronCube(Cubependium* cubependium);
-	IronCube(float temperature, Cubependium* cubependium);
+	IronCube(Cubependium* cubependium, short position);
+	IronCube(float temperature, Cubependium* cubependium, short position);
 };

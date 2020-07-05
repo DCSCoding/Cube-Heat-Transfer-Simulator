@@ -4,7 +4,7 @@ class Cubependium {
 public:
 	Cubependium();
 	struct Cube_Data {
-		 size_t type_id;
+		 short type_id;
 		 float volume;
 		 float density;
 		 float mass = density * volume;
@@ -78,7 +78,7 @@ public:
 		 1000000.0f,
 		 1.0,
 		 1000000.0f,
-		 .6f,
+		 2.0f,
 		 4.2f,
 		 273.0f,
 		 100.0f+273.0f

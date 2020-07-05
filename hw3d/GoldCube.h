@@ -5,6 +5,6 @@
 
 class GoldCube : public Logical_Cube {
 public:
-	GoldCube(Cubependium* cubependium);
-	GoldCube(float temperature, Cubependium* cubependium);
+	GoldCube(Cubependium* cubependium, short position);
+	GoldCube(float temperature, Cubependium* cubependium, short position);
 };

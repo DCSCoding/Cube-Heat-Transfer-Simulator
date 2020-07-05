@@ -43,9 +43,9 @@ void Camera::SpawnControlWindow() noexcept
 
 void Camera::Reset() noexcept
 {
-	x = 0.0f;
-	y = 0.0f;
-	z = 20.0f;
+	x = 48.3f;
+	y = 3.4f;
+	z = 36.8f;
 	theta = 0.0f;
 	phi = 0.0f;
 	pitch = 0.0f;

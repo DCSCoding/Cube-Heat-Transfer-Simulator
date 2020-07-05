@@ -3,7 +3,7 @@
 
 class WaterCube : public Logical_Cube {
 public:
-	WaterCube(Cubependium* cubependium);
-	WaterCube(float temperature, Cubependium* cubependium);
+	WaterCube(Cubependium* cubependium, short position);
+	WaterCube(float temperature, Cubependium* cubependium, short position);
 
 };

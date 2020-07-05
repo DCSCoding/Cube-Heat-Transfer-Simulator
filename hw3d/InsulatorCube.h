@@ -5,6 +5,6 @@
 
 class InsulatorCube : public Logical_Cube {
 public:
-	InsulatorCube(Cubependium* cubependium);
-	InsulatorCube(float temperature, Cubependium* cubependium);
+	InsulatorCube(Cubependium* cubependium, short position);
+	InsulatorCube(float temperature, Cubependium* cubependium, short position);
 };

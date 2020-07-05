@@ -3,7 +3,7 @@
 
 class AirCube: public Logical_Cube{
 public:
-	AirCube(Cubependium* cubependium);
-	AirCube(float temperature, Cubependium* cubependium);
+	AirCube(Cubependium* cubependium, short position);
+	AirCube(float temperature, Cubependium* cubependium, short position);
 	
 };

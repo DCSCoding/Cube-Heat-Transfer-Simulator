@@ -9,6 +9,7 @@ InsulatorCube::InsulatorCube(float temperature, Cubependium* cubependium) :
 	Logical_Cube(temperature, cubependium)
 {
 	id = 3;
+	active = false;
 	energy_content = cp->getTypeData(id).mass * cp->getTypeData(id).specific_heat * temperature;
 	setState(temperature);
 }

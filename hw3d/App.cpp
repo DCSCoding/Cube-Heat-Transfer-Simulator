@@ -1,4 +1,5 @@
 #include "App.h"
+#include <algorithm>
 #include "NonStaticBox.h"
 #include "GoldBox.h"
 #include "IronBox.h"
@@ -18,8 +19,9 @@
 #include "imgui/imgui_impl_win32.h"
 #include "imgui/imgui_impl_dx11.h"
 
-ThermoSim ts(100, 100, 100);
+ThermoSim ts(16, 16, 16);
 long duration = 0;
+float average = 0;
 App::App()
 	:
 	wnd(1920, 1080, "Thermo")
@@ -81,7 +83,7 @@ App::App()
 				float fy = float(y);
 				float fz = float(z);
 
-				size_t id = ts.cubes2[x][y][z]->id;
+				size_t id = ts.cubes2[x][y][z]->getType();
 				
 				switch (id) {
 				case 1 :
@@ -149,7 +151,14 @@ App::~App()
 
 int App::Go()
 {
+	std::random_device rg;
+	std::mt19937 g(rg());
 	size_t framecount = 0;
+	int steps[64];
+	for (int k = 0; k < 64; k++) {
+		steps[k] = k;
+	}
+	std::shuffle(&steps[0], &steps[64], rg);
 	while (true)
 	{
 		// process all messages pending, but to not block for new messages
@@ -159,17 +168,23 @@ int App::Go()
 			return *ecode;
 		}
 		DoFrame(framecount);
+		
+		
+		auto t1 = std::chrono::high_resolution_clock::now();
+		
+		ts.updateAdjacent(ts.cubes2, steps[framecount]);
+		ts.setNeighborMap(ts.cubes2, steps[framecount]);
+		
+
+		auto t2 = std::chrono::high_resolution_clock::now();
+		duration += std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count();
 		framecount++;
-		if (framecount == 1) {
-			auto t1 = std::chrono::high_resolution_clock::now();
-			ts.updateAdjacent(ts.cubes2);
-			
-			auto t2 = std::chrono::high_resolution_clock::now();
-			duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
+		if (framecount == 63) {
+
+			average = duration / 64;
+			duration = 0;
 			framecount = 0;
-		}
-		if (framecount == 60) {
-			ts.setNeighborMap(ts.cubes2);
+			std::shuffle(&steps[0], &steps[64], rg);
 		}
 	}
 }
@@ -179,12 +194,12 @@ void App::CubeMenu() {
 	if (ImGui::Begin("Cube Menu"))
 	{
 		ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-		ImGui::Text("%ld ms per cycle", duration);
+		ImGui::Text("%.1f microseconds per cycle", average);
 		for (int x = 0; x < ts.cubes.size(); x++) {
 			for (int y = 0; y < ts.cubes[x].size(); y++) {
 				for (int z = 0; z < ts.cubes[x][y].size(); z++) {
-					if(ts.cubes[x][y][z].id != 3)
-					ImGui::Text("Temperature: %.3f %u %i %i %i id: %i", ts.cubes[x][y][z].getTemperature(), ts.cubes[x][y][z].active, x, y, z, int(ts.cubes[x][y][z].id));
+					if(ts.cubes[x][y][z].getType() != 3)
+					ImGui::Text("Temperature: %.3f %u %i %i %i id: %i", ts.cubes[x][y][z].getTemperature(), ts.cubes[x][y][z].isActive(), x, y, z, int(ts.cubes[x][y][z].getType()));
 				}
 			}
 		}
