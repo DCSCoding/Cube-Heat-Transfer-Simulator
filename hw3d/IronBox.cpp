@@ -6,13 +6,13 @@
 
 
 IronBox::IronBox(Graphics& gfx, size_t type, float xdis, float ydis, float zdis,
-	ThermoSim& rts, float chi1, float theta1, float phi1)
+	Logical_Cube* pcube, float chi1, float theta1, float phi1)
 	:
 	box_type(type),
 	x(xdis),
 	y(ydis),
 	z(zdis),
-	ts(rts),
+	pc(pcube),
 	chi(chi1),
 	theta(theta1),
 	phi(phi1)
@@ -63,7 +63,7 @@ IronBox::IronBox(Graphics& gfx, size_t type, float xdis, float ydis, float zdis,
 	};
 
 	float temp = 0;
-	float temperature = ts.cubes[x][y][z].getTemperature();
+	float temperature = pc->getTemperature();
 	if (temperature < 273) {
 		temp = 0;
 	}
@@ -118,7 +118,7 @@ DirectX::XMMATRIX IronBox::GetTransformXM() const noexcept
 
 PixelShaderConstants IronBox::GetPixelShaderConstants() const noexcept {
 
-	float temperature = ts.cubes[x][y][z].getTemperature();
+	float temperature = pc->getTemperature();
 	float temp = 0;
 	if (temperature < 273) {
 		temp = 0;

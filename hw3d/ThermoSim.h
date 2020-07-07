@@ -1,26 +1,16 @@
 #pragma once
-#include "Logical_Cube.h"
+#include "Chunk.h"
 #include "Cubependium.h"
 #include <unordered_map>
 class ThermoSim {
 public:
-	ThermoSim(size_t width, size_t length, size_t height);
-	void getNewState(std::vector<std::vector<std::vector<Logical_Cube>>> cubes, std::vector<std::vector<std::vector<Logical_Cube*>>> cubes2);
-	size_t width;
-	size_t length;
-	size_t height;
-	long duration = 0;
-	std::vector<std::vector<std::vector<Logical_Cube>>> cubes;
-	std::vector<std::vector<std::vector<Logical_Cube*>>> cubes2;
+	ThermoSim();
+	std::vector<Chunk> chunks;
 	Cubependium cp;
+	void addChunk(int x, int y, int z);
+	void update(unsigned char step, int chunk_index);
+	void update_all(int chunk_index);
 	/*void update(std::vector<std::vector<std::vector<Logical_Cube*>>> cubes);*/
-	void updateAdjacent(std::vector<std::vector<std::vector<Logical_Cube*>>> cubes, unsigned char step);
-	void setNeighborMap(std::vector<std::vector<std::vector<Logical_Cube*>>> cubes);
-	void setNeighborMap(std::vector<std::vector<std::vector<Logical_Cube*>>> cubes, unsigned char step);
-	void checkActive(Logical_Cube* cube, std::vector<Logical_Cube*> neighbors);
 private:
-	void updateNeighbors(Logical_Cube* cube, std::vector<Logical_Cube*> neighbors, std::unordered_map<Logical_Cube*, bool>& has_moved);
-	
-	std::unordered_map<Logical_Cube*, std::vector<Logical_Cube*>> neighbor_map;
 
 };

@@ -6,13 +6,13 @@
 
 
 WaterBox::WaterBox(Graphics& gfx, size_t type, float xdis, float ydis, float zdis,
-	ThermoSim& rts, float chi1, float theta1, float phi1)
+	Logical_Cube* pcube, float chi1, float theta1, float phi1)
 	:
 	box_type(type),
 	x(xdis),
 	y(ydis),
 	z(zdis),
-	ts(rts),
+	pc(pcube),
 	chi(chi1),
 	theta(theta1),
 	phi(phi1)
@@ -63,7 +63,7 @@ WaterBox::WaterBox(Graphics& gfx, size_t type, float xdis, float ydis, float zdi
 	};
 
 	
-	float temperature = ts.cubes[x][y][z].getTemperature();
+	float temperature = pc->getTemperature();
 	float temp = 0;
 	if (temperature < 323) {
 		temp = 0;
@@ -120,7 +120,7 @@ DirectX::XMMATRIX WaterBox::GetTransformXM() const noexcept
 }
 
 PixelShaderConstants WaterBox::GetPixelShaderConstants() const noexcept {
-	float temperature = ts.cubes[x][y][z].getTemperature();
+	float temperature = pc->getTemperature();
 	float temp = 0;
 	if (temperature < 323) {
 		temp = 0;

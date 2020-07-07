@@ -58,6 +58,11 @@ short Logical_Cube::getType()
 	return id;
 }
 
+short Logical_Cube::getIndex()
+{
+	return pos;
+}
+
 void Logical_Cube::setEnergyContent(float energy)
 {
 	energy_content = energy;

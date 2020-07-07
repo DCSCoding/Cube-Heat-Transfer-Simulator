@@ -14,6 +14,7 @@ public:
 	float getEnergyContent(float temp);
 	unsigned char getState();
 	short getType();
+	short getIndex();
 	void setEnergyContent(float energy);
 	void setType(size_t type);
 	void setActive(bool activity_flag);

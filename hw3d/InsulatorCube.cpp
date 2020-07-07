@@ -1,12 +1,12 @@
 #include "Logical_Cube.h"
 #include "InsulatorCube.h"
 
-InsulatorCube::InsulatorCube(Cubependium* cubependium) :
-	Logical_Cube(273, cubependium)
+InsulatorCube::InsulatorCube(Cubependium* cubependium, short position) :
+	Logical_Cube(cubependium, position)
 {}
 
-InsulatorCube::InsulatorCube(float temperature, Cubependium* cubependium) :
-	Logical_Cube(temperature, cubependium)
+InsulatorCube::InsulatorCube(float temperature, Cubependium* cubependium, short position) :
+	Logical_Cube(temperature, cubependium, position)
 {
 	id = 3;
 	active = false;

@@ -6,13 +6,13 @@
 
 
 NonStaticBox::NonStaticBox(Graphics& gfx, size_t type, float xdis, float ydis, float zdis,
-	ThermoSim& rts, float chi1, float theta1, float phi1)
+	Logical_Cube* pcube, float chi1, float theta1, float phi1)
 	:
 	box_type(type),
 	x(xdis),
 	y(ydis),
 	z(zdis),
-	ts(rts),
+	pc(pcube),
 	chi(chi1),
 	theta(theta1),
 	phi(phi1)
@@ -63,7 +63,7 @@ NonStaticBox::NonStaticBox(Graphics& gfx, size_t type, float xdis, float ydis, f
 	};
 
 
-	float temp = ts.cubes[x][y][z].getTemperature() / 1000.0f;
+	float temp = pc->getTemperature() / 1000.0f;
 	
 	const PixelShaderConstants cb2 =
 	{
@@ -112,7 +112,7 @@ DirectX::XMMATRIX NonStaticBox::GetTransformXM() const noexcept
 
 PixelShaderConstants NonStaticBox::GetPixelShaderConstants() const noexcept {
 
-	float temp = ts.cubes[x][y][z].getTemperature() / 1000.0f;
+	float temp = pc->getTemperature() / 1000.0f;
 	const PixelShaderConstants cb2 =
 	{
 		{

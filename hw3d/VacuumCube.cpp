@@ -1,8 +1,8 @@
 #include "Cube.h"
 #include "VacuumCube.h"
 
-VacuumCube::VacuumCube(Cubependium* cubependium) :
-	Logical_Cube(0, cubependium)
+VacuumCube::VacuumCube(Cubependium* cubependium, short position) :
+	Logical_Cube(cubependium, position)
 {
 	id = 5;
 }

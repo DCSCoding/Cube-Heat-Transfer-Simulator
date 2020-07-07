@@ -1,5 +1,4 @@
 #include "App.h"
-#include <algorithm>
 #include "NonStaticBox.h"
 #include "GoldBox.h"
 #include "IronBox.h"
@@ -18,10 +17,13 @@
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_win32.h"
 #include "imgui/imgui_impl_dx11.h"
+#include "Chunk.h"
+#include <future>
 
-ThermoSim ts(16, 16, 16);
+ThermoSim ts;
 long duration = 0;
 float average = 0;
+
 App::App()
 	:
 	wnd(1920, 1080, "Thermo")
@@ -71,12 +73,46 @@ App::App()
 		std::uniform_int_distribution<int> typedist{ 0,2 };
 	};
 
-
 	Factory f(wnd.Gfx());
+	for (int i = 0; i < 244; i++) {
+		ts.addChunk(0, 0, i);
+	}
+	
+	
+	//ts.addChunk(0, 0, 1B
 	/*drawables.reserve( nDrawables );
 	std::generate_n( std::back_inserter( drawables ),nDrawables,f );*/
 
-	for (int x = 0; x < ts.width; x++) {
+	for (Chunk c : ts.chunks) {
+		for (Logical_Cube* cube : c.pcubes) {
+			size_t id = cube->getType();
+			int offx = (c.x_pos) * 16;
+			int offy = (c.y_pos) * 16;
+			int offz = (c.z_pos) * 16;
+			float x = int((cube->getIndex() / 256)) + offx;
+			float y = int(((cube->getIndex() / 16) % 16)) + offy;
+			float z = int(((cube->getIndex() % 16))) + offz;
+			
+
+			switch (id) {
+			case 1:
+				drawables.emplace_back(std::make_unique<GoldBox>(wnd.Gfx(), id, x, y, z, cube, 0.0f, 0.0f, 0.0f));
+				break;
+			case 2:
+				drawables.emplace_back(std::make_unique<IronBox>(wnd.Gfx(), id, x, y, z, cube, 0.0f, 0.0f, 0.0f));
+				break;
+			case 3:
+				//drawables.push_back(std::make_unique<InsulatorBox>(wnd.Gfx(), id, x, y, z, cube, 0.0f, 0.0f, 0.0f));
+				break;
+			case 4:
+				//drawables.push_back(std::make_unique<NonStaticBox>(wnd.Gfx(), id, x, y, z, cube, 0.0f, 0.0f, 0.0f));
+				break;
+			case 6:
+				drawables.emplace_back(std::make_unique<WaterBox>(wnd.Gfx(), id, x, y, z, cube, 0.0f, 0.0f, 0.0f));
+			}
+		}
+	}
+	/*for (int x = 0; x < ts.width; x++) {
 		for (int y = 0; y < ts.length; y++) {
 			for (int z = 0; z < ts.height; z++) {
 				float fx = float(x);
@@ -93,10 +129,10 @@ App::App()
 					drawables.push_back(std::make_unique<IronBox>(wnd.Gfx(), id, fx, fy, fz, ts, 0.0f, 0.0f, 0.0f));
 					break;
 				case 3:
-					//drawables.push_back(std::make_unique<InsulatorBox>(wnd.Gfx(), id, fx, fy, fz, ts, 0.0f, 0.0f, 0.0f));
+					drawables.push_back(std::make_unique<InsulatorBox>(wnd.Gfx(), id, fx, fy, fz, ts, 0.0f, 0.0f, 0.0f));
 					break;
 				case 4:
-					//drawables.push_back(std::make_unique<NonStaticBox>(wnd.Gfx(), id, fx, fy, fz, ts, 0.0f, 0.0f, 0.0f));
+					drawables.push_back(std::make_unique<NonStaticBox>(wnd.Gfx(), id, fx, fy, fz, ts, 0.0f, 0.0f, 0.0f));
 					break;
 				case 6:
 					drawables.push_back(std::make_unique<WaterBox>(wnd.Gfx(), id, fx, fy, fz, ts, 0.0f, 0.0f, 0.0f));
@@ -104,7 +140,7 @@ App::App()
 				
 			}
 		}
-	}
+	}*/
 
 	// auto s = Surface::FromFile("Images\kappa50.png");
 
@@ -159,6 +195,7 @@ int App::Go()
 		steps[k] = k;
 	}
 	std::shuffle(&steps[0], &steps[64], rg);
+	std::vector<std::future<void>> update_futures;
 	while (true)
 	{
 		// process all messages pending, but to not block for new messages
@@ -172,15 +209,15 @@ int App::Go()
 		
 		auto t1 = std::chrono::high_resolution_clock::now();
 		
-		ts.updateAdjacent(ts.cubes2, steps[framecount]);
-		ts.setNeighborMap(ts.cubes2, steps[framecount]);
-		
-
+		//ts.update(steps[framecount]);
 		auto t2 = std::chrono::high_resolution_clock::now();
 		duration += std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count();
 		framecount++;
 		if (framecount == 63) {
-
+			for (int chunk_index = 0; chunk_index < ts.chunks.size(); chunk_index++) {
+				//update_futures.push_back(std::async(std::launch::async, &ThermoSim::update, &ts, steps[framecount], chunk_index));
+				update_futures.push_back(std::async(std::launch::async, &ThermoSim::update_all, &ts, chunk_index));
+			}
 			average = duration / 64;
 			duration = 0;
 			framecount = 0;
@@ -195,11 +232,26 @@ void App::CubeMenu() {
 	{
 		ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		ImGui::Text("%.1f microseconds per cycle", average);
-		for (int x = 0; x < ts.cubes.size(); x++) {
+		/*for (int x = 0; x < ts.cubes.size(); x++) {
 			for (int y = 0; y < ts.cubes[x].size(); y++) {
 				for (int z = 0; z < ts.cubes[x][y].size(); z++) {
 					if(ts.cubes[x][y][z].getType() != 3)
-					ImGui::Text("Temperature: %.3f %u %i %i %i id: %i", ts.cubes[x][y][z].getTemperature(), ts.cubes[x][y][z].isActive(), x, y, z, int(ts.cubes[x][y][z].getType()));
+					ImGui::Text("Temperature: %.3f %u %i %i %i id: %i", pc->getTemperature(), ts.cubes[x][y][z].isActive(), x, y, z, int(ts.cubes[x][y][z].getType()));
+				}
+			}
+		}*/
+		/*for (Chunk c : ts.chunks) {
+			for (Logical_Cube* cube : c.pcubes) {
+				if (cube->getType() != 3) {
+					ImGui::Text("Temperature: %.3f %u %h id: %i", cube->getTemperature(), cube->isActive(), cube->getIndex(), int(cube->getType()));
+				}
+			}
+		}*/
+
+		for (int i = 0; i < ts.chunks.size(); i++) {
+			for (int m = 0; m < 10; m++) {
+				if (ts.chunks[i].pcubes[m]->getType() != 3) {
+					ImGui::Text("Temperature: %.3f %u %h id: %i", ts.chunks[i].pcubes[m]->getTemperature(), ts.chunks[i].pcubes[m]->isActive(), ts.chunks[i].pcubes[m]->getIndex(), int(ts.chunks[i].pcubes[m]->getType()));
 				}
 			}
 		}
