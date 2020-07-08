@@ -74,7 +74,7 @@ App::App()
 	};
 
 	Factory f(wnd.Gfx());
-	for (int i = 0; i < 244; i++) {
+	for (int i = 0; i < 1; i++) {
 		ts.addChunk(0, 0, i);
 	}
 	

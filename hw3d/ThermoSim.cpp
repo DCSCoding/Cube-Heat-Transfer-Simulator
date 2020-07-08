@@ -1,6 +1,3 @@
-// ThermoSim.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <thread>
 #include "ThermoSim.h"
 
@@ -12,8 +9,7 @@ ThermoSim::ThermoSim()
 
 void ThermoSim::addChunk(int x, int y, int z)
 {
-	Chunk chonk(x, y, z, &cp);
-	chunks.emplace_back(chonk);
+	chunks.emplace_back(Chunk(x, y, z, &cp));
 }
 
 void ThermoSim::update(unsigned char step, int chunk_index)

@@ -5,6 +5,17 @@
 #include "WaterCube.h"
 #include "AirCube.h"
 
+//long allocated_mem = 0;
+//void* operator new(size_t size) {
+//	allocated_mem += size;
+//	return malloc(size);
+//}
+//
+//void operator delete(void* memory, size_t size) {
+//	allocated_mem -= size;
+//	free(memory);
+//}
+
 Chunk::Chunk(int x, int y, int z, Cubependium* cp) :
 	x_pos(x), y_pos(y), z_pos(z)
 {
@@ -16,6 +27,29 @@ Chunk::Chunk(int x, int y, int z, Cubependium* cp) :
 	for (short i = 0; i < 4096; i++) {
 		cubes[i] = AirCube(random_int(rg), cp, i);
 		pcubes[i] = &cubes[i];
+		//face cubes
+		int x = i / 256;
+		int y = (i / 16) % 16;
+		int z = i % 16;
+		
+		if (y == 0) {
+			bottom_face_cubes[x+(z*16)] == &cubes[i];
+		}
+		else if (y == 15) {
+			top_face_cubes[x+ (z*16)] == &cubes[i];
+		}
+		else if (x == 0) {
+			left_face_cubes[y + (z*16)] == &cubes[i];
+		}
+		else if (x == 15) {
+			right_face_cubes[y + (z*16)] == &cubes[i];
+		}
+		else if (z == 0) {
+			front_face_cubes[x + (y*16)] == &cubes[i];
+		}
+		else if (z == 15) {
+			back_face_cubes[x + (y*16)] == &cubes[i];
+		}
 	};
 
 	setNeighborMap();
@@ -53,6 +87,7 @@ void Chunk::setNeighborMap()
 
 	}
 };
+
 
 //Creates an unordered map which takes a Logical_Cube* as a key and returns an array of pointers to that cubes neighbors as a value.
 //The order of the cubes lateral neighbors are randomized. The top cube is always first, and the bottom cube is always last. 
@@ -114,7 +149,6 @@ void Chunk::update(unsigned char step)
 void Chunk::update()
 {
 	std::vector<Logical_Cube*> neighbors;
-	std::unordered_map<Logical_Cube*, bool> has_moved;
 
 	for (short i = 0; i < 4096; i++) {
 		if (pcubes[i]->isActive()) {
@@ -134,7 +168,7 @@ void Chunk::updateNeighbors(Logical_Cube* cube, std::vector<Logical_Cube*> neigh
 	bool has_difference = false;
 
 	std::vector<float> transfer_rate;
-	for (Logical_Cube* c : neighbors) {
+	for (Logical_Cube* &c : neighbors) {
 
 		float ctr = cube->getConductivity() * c->getConductivity() * scaler;
 		transfer_rate.emplace_back(ctr * (cube->getTemperature() - c->getTemperature()));
@@ -182,7 +216,7 @@ void Chunk::checkActive(Logical_Cube* cube, std::vector<Logical_Cube*> neighbors
 	if (cube->getType() == 3) {
 		return;
 	}
-	for (Logical_Cube* c : neighbors) {
+	for (Logical_Cube* &c : neighbors) {
 		if (abs(c->getTemperature() - cube->getTemperature()) > 1) {
 			cube->setActive(true);
 			return;
