@@ -7,9 +7,13 @@ public:
 	ThermoSim();
 	std::vector<Chunk> chunks;
 	Cubependium cp;
+	std::unordered_map<Chunk*, std::vector<Chunk*>> chunk_neighbors;
 	void addChunk(int x, int y, int z);
-	void update(unsigned char step, int chunk_index);
+	//void update(unsigned char step, int chunk_index);
 	void update_all(int chunk_index);
+	void update_neighbor_chunks();
+	void set_chunk_neighbors();
+	
 	/*void update(std::vector<std::vector<std::vector<Logical_Cube*>>> cubes);*/
 private:
 

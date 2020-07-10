@@ -21,6 +21,7 @@ public:
 	void setNeighborMap(unsigned char step);
 	void update(unsigned char step);
 	void update();
+	void update_pair(Logical_Cube* cube, Logical_Cube* neighbor);
 	void updateNeighbors(Logical_Cube* cube, std::vector<Logical_Cube*> neighbors, std::unordered_map<Logical_Cube*, bool>& has_moved);
 	void checkActive(Logical_Cube* cube, std::vector<Logical_Cube*> neighbors);
 };

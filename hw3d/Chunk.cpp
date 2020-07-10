@@ -16,6 +16,7 @@
 //	free(memory);
 //}
 
+
 Chunk::Chunk(int x, int y, int z, Cubependium* cp) :
 	x_pos(x), y_pos(y), z_pos(z)
 {
@@ -25,13 +26,19 @@ Chunk::Chunk(int x, int y, int z, Cubependium* cp) :
 	//For now, creates an array of gold cubes.
 	//Todo: Add a parameter to decide what the chunk should generate. 
 	for (short i = 0; i < 4096; i++) {
-		cubes[i] = AirCube(random_int(rg), cp, i);
-		pcubes[i] = &cubes[i];
-		//face cubes
 		int x = i / 256;
 		int y = (i / 16) % 16;
 		int z = i % 16;
+
+		if (y < 3) {
+			cubes[i] = WaterCube(random_int(rg), cp, i);
+		}
+		else {
+			cubes[i] = WaterCube(274, cp, i);
+		}
 		
+		pcubes[i] = &cubes[i];
+		//face cubes
 		if (y == 0) {
 			bottom_face_cubes[x+(z*16)] == &cubes[i];
 		}
@@ -58,20 +65,23 @@ Chunk::Chunk(int x, int y, int z, Cubependium* cp) :
 
 void Chunk::setNeighborMap()
 {
-	std::random_device rg;
+	std::default_random_engine rg(time(0));
 	std::mt19937 g(rg());
 
 	for (short i = 0; i < 4096; i++) {
+		int x = i / 256;
+		int y = (i / 16) % 16;
+		int z = i % 16;
 		std::vector<Logical_Cube*> neighbors;
 		//first adds the top cube to the neighbor list.
-		if (i + 16 < 4096) neighbors.emplace_back(pcubes[i + 16]);
+		if (y + 1 < 16) neighbors.emplace_back(pcubes[i + 16]);
 		//adds the laterally adjacent cubes to the neighbor list.
-		if (i + 256 < 4096) neighbors.emplace_back(pcubes[i + 256]);
-		if (i + 1 < 4096) neighbors.emplace_back(pcubes[i + 1]);
-		if (i - 256 >= 0) neighbors.emplace_back(pcubes[i - 256]);
-		if (i - 1 >= 0) neighbors.emplace_back(pcubes[i - 1]);
+		if (x + 1 < 16) neighbors.emplace_back(pcubes[i + 256]);
+		if (z + 1 < 16) neighbors.emplace_back(pcubes[i + 1]);
+		if (x - 1 >= 0) neighbors.emplace_back(pcubes[i - 256]);
+		if (z - 1 >= 0) neighbors.emplace_back(pcubes[i - 1]);
 		//adds the bottom cube to the neighbor list.
-		if (i - 16 >= 0) neighbors.emplace_back(pcubes[i - 16]);
+		if (y - 1 >= 0) neighbors.emplace_back(pcubes[i - 16]);
 
 		//Shuffling the neighbor order
 		if (i + 16 < 4096 && i - 16 >= 0) {
@@ -91,66 +101,69 @@ void Chunk::setNeighborMap()
 
 //Creates an unordered map which takes a Logical_Cube* as a key and returns an array of pointers to that cubes neighbors as a value.
 //The order of the cubes lateral neighbors are randomized. The top cube is always first, and the bottom cube is always last. 
-void Chunk::setNeighborMap(unsigned char step)
-{
-	std::random_device rg;
-	std::mt19937 g(rg());
-	short end = (step + 1) * 64;
-	short start = end - 64;
-
-	for (short i = start; i < end; i++) {
-		std::vector<Logical_Cube*> neighbors;
-		//first adds the top cube to the neighbor list.
-		if (i + 16 < 4096) neighbors.emplace_back(pcubes[i + 16]);
-		//adds the laterally adjacent cubes to the neighbor list.
-		if (i + 256 < 4096) neighbors.emplace_back(pcubes[i + 256]);
-		if (i + 1 < 4096) neighbors.emplace_back(pcubes[i + 1]);
-		if (i - 256 >= 0) neighbors.emplace_back(pcubes[i - 256]);
-		if (i - 1 >= 0) neighbors.emplace_back(pcubes[i - 1]);
-		//adds the bottom cube to the neighbor list.
-		if (i - 16 >= 0) neighbors.emplace_back(pcubes[i - 16]);
-
-		//Shuffling the neighbor order
-		if (i + 16 < 4096 && i - 16 >= 0) {
-			//If there is a top and bottom neighbor, shuffles positions 1-4 (lateral neighbors)
-			std::shuffle(neighbors.begin() + 1, neighbors.end() - 1, g);
-		}
-		else if (i + 16 > 4096) {
-			//If there is no top cube, shuffle from 0-4
-			std::shuffle(neighbors.begin(), neighbors.end() - 1, g);
-		}
-
-		neighbor_map[pcubes[i]] = neighbors;
-
-	}
-
-}
+//void Chunk::setNeighborMap(unsigned char step)
+//{
+//	std::random_device rg;
+//	std::mt19937 g(rg());
+//	short end = (step + 1) * 64;
+//	short start = end - 64;
+//
+//	for (short i = start; i < end; i++) {
+//		std::vector<Logical_Cube*> neighbors;
+//		//first adds the top cube to the neighbor list.
+//		if (i + 16 < 4096) neighbors.emplace_back(pcubes[i + 16]);
+//		//adds the laterally adjacent cubes to the neighbor list.
+//		if (i + 256 < 4096) neighbors.emplace_back(pcubes[i + 256]);
+//		if (i + 1 < 4096) neighbors.emplace_back(pcubes[i + 1]);
+//		if (i - 256 >= 0) neighbors.emplace_back(pcubes[i - 256]);
+//		if (i - 1 >= 0) neighbors.emplace_back(pcubes[i - 1]);
+//		//adds the bottom cube to the neighbor list.
+//		if (i - 16 >= 0) neighbors.emplace_back(pcubes[i - 16]);
+//
+//		//Shuffling the neighbor order
+//		if (i + 16 < 4096 && i - 16 >= 0) {
+//			//If there is a top and bottom neighbor, shuffles positions 1-4 (lateral neighbors)
+//			std::shuffle(neighbors.begin() + 1, neighbors.end() - 1, g);
+//		}
+//		else if (i + 16 > 4096) {
+//			//If there is no top cube, shuffle from 0-4
+//			std::shuffle(neighbors.begin(), neighbors.end() - 1, g);
+//		}
+//
+//		neighbor_map[pcubes[i]] = neighbors;
+//
+//	}
+//
+//}
 
 //Updates 1/64th of the chunks cubes. The piece of the chunk to be updated is determined by the "step".
-void Chunk::update(unsigned char step)
-{
-	std::vector<Logical_Cube*> neighbors;
-	std::unordered_map<Logical_Cube*, bool> has_moved;
-	
-	short end = (step + 1) * 64;
-	short start = end - 64;
-
-	for (short i = start; i < end; i++) {
-		if (pcubes[i]->isActive()) {
-			updateNeighbors(pcubes[i], neighbor_map[pcubes[i]], has_moved);
-		}
-		else {
-			checkActive(pcubes[i], neighbor_map[pcubes[i]]);
-		}
-	}
-	
-}
+//void Chunk::update(unsigned char step)
+//{
+//	std::vector<Logical_Cube*> neighbors;
+//	std::unordered_map<Logical_Cube*, bool> has_moved;
+//	
+//	short end = (step + 1) * 64;
+//	short start = end - 64;
+//
+//	for (short i = start; i < end; i++) {
+//		if (pcubes[i]->isActive()) {
+//			updateNeighbors(pcubes[i], neighbor_map[pcubes[i]], has_moved);
+//		}
+//		else {
+//			checkActive(pcubes[i], neighbor_map[pcubes[i]]);
+//		}
+//	}
+//	
+//}
 
 void Chunk::update()
 {
-	std::vector<Logical_Cube*> neighbors;
 
 	for (short i = 0; i < 4096; i++) {
+	
+		if (i == 3839) {
+			i = 3839;
+		}
 		if (pcubes[i]->isActive()) {
 			updateNeighbors(pcubes[i], neighbor_map[pcubes[i]], has_moved);
 		}
@@ -159,7 +172,10 @@ void Chunk::update()
 		}
 	}
 
+	has_moved.clear();
+
 }
+
 
 //Updates a cube and its neighbors. Handles heat transfer, as well as "movement" of cubes due to heat.
 void Chunk::updateNeighbors(Logical_Cube* cube, std::vector<Logical_Cube*> neighbors, std::unordered_map<Logical_Cube*, bool>& has_moved)
@@ -168,7 +184,7 @@ void Chunk::updateNeighbors(Logical_Cube* cube, std::vector<Logical_Cube*> neigh
 	bool has_difference = false;
 
 	std::vector<float> transfer_rate;
-	for (Logical_Cube* &c : neighbors) {
+	for (Logical_Cube* c : neighbors) {
 
 		float ctr = cube->getConductivity() * c->getConductivity() * scaler;
 		transfer_rate.emplace_back(ctr * (cube->getTemperature() - c->getTemperature()));
@@ -205,7 +221,42 @@ void Chunk::updateNeighbors(Logical_Cube* cube, std::vector<Logical_Cube*> neigh
 
 	}
 
+}
 
+void Chunk::update_pair(Logical_Cube* cube, Logical_Cube* neighbor)
+{
+	int scaler = 8;
+	bool has_difference = false;
+
+	float transfer_rate = 0;
+	float ctr = cube->getConductivity() * neighbor->getConductivity() * scaler;
+	transfer_rate = ctr * (cube->getTemperature() - neighbor->getTemperature());
+	if (abs(cube->getTemperature() - neighbor->getTemperature()) > 1) {
+		has_difference = true;
+	}
+
+	if (!has_difference) {
+		cube->setActive(false);
+		return;
+	}
+	cube->update(-transfer_rate);
+	neighbor->update(transfer_rate);
+
+	//Checks if a cube is hotter and less dense than either the cube above it or the cubes at its sides. If it is, the cube switches values with that cube, making it "rise".
+	//Todo: make this switch compatible with the rendering engine. 
+	//note: in current implementation, during the chunk neighbor pass, it does not check if the neighbor is below the cube.
+	if (has_moved[cube] == false && cube->getState() > 0 && cube->getState() >= neighbor->getState() && cube->getTemperature() > neighbor->getTemperature() && cube->getDensity() <= neighbor->getDensity() && neighbor->isActive()) {
+		size_t temp_type = cube->getType();
+		float temp_energy_content = cube->getEnergyContent();
+		cube->setType(neighbor->getType());
+		cube->setEnergyContent(neighbor->getEnergyContent());
+		neighbor->setType(temp_type);
+		neighbor->setEnergyContent(temp_energy_content);
+		cube->updateTemperature();
+		neighbor->updateTemperature();
+		has_moved[cube] = true;
+		has_moved[neighbor] = true;
+	}
 
 }
 //Sets a flag which tells the updater whether or not a cube should be considered for heat transfer. If there is a heat differential between a cube
