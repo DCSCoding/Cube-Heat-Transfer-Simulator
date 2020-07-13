@@ -18,14 +18,16 @@
 *	along with The Chili Direct3D Engine.  If not, see <http://www.gnu.org/licenses/>.    *
 ******************************************************************************************/
 #include "App.h"
-
-
+#include <random>
+#include <chrono>
+std::mt19937 random;
 int CALLBACK WinMain(
 	HINSTANCE hInstance,
 	HINSTANCE hPrevInstance,
 	LPSTR     lpCmdLine,
 	int       nCmdShow )
 {
+	random.seed(time(0));
 	try
 	{
 		return App{}.Go();

@@ -74,9 +74,10 @@ App::App()
 	};
 
 	Factory f(wnd.Gfx());
-	for (int i = 0; i < 2; i++) {
+	for (int i = 0; i < 1; i++) {
 		ts.addChunk(0, i, 0);
 	}
+	ts.addChunk(1, 0, 0);
 	
 	
 	//ts.addChunk(0, 0, 1B
@@ -214,7 +215,7 @@ int App::Go()
 					f.wait();
 				}
 			}
-			
+
 			ts.update_neighbor_chunks();
 			auto t1 = std::chrono::high_resolution_clock::now();
 			for (int chunk_index = 0; chunk_index < ts.chunks.size(); chunk_index++) {

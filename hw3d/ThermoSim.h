@@ -2,8 +2,10 @@
 #include "Chunk.h"
 #include "Cubependium.h"
 #include <unordered_map>
+#include <random>
 class ThermoSim {
 public:
+
 	ThermoSim();
 	std::vector<Chunk> chunks;
 	Cubependium cp;
@@ -13,7 +15,7 @@ public:
 	void update_all(int chunk_index);
 	void update_neighbor_chunks();
 	void set_chunk_neighbors();
-	
+	std::mt19937 rg;
 	/*void update(std::vector<std::vector<std::vector<Logical_Cube*>>> cubes);*/
 private:
 

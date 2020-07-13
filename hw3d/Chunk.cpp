@@ -1,9 +1,9 @@
 #include "Chunk.h"
-#include <random>
-#include <chrono>
 #include "GoldCube.h"
 #include "WaterCube.h"
 #include "AirCube.h"
+#include <random>
+#include <chrono>
 
 //long allocated_mem = 0;
 //void* operator new(size_t size) {
@@ -16,14 +16,12 @@
 //	free(memory);
 //}
 
-
-Chunk::Chunk(int x, int y, int z, Cubependium* cp) :
-	x_pos(x), y_pos(y), z_pos(z)
+Chunk::Chunk(int x, int y, int z, Cubependium* cp, std::mt19937& rand) :
+	x_pos(x), y_pos(y), z_pos(z), rg(rand)
 {
-	std::default_random_engine rg(time(0));
 	std::uniform_int_distribution<int> random_int(274, 400);
 	size_t index = 0;
-	//For now, creates an array of gold cubes.
+
 	//Todo: Add a parameter to decide what the chunk should generate. 
 	for (short i = 0; i < 4096; i++) {
 		int x = i / 256;
@@ -37,26 +35,27 @@ Chunk::Chunk(int x, int y, int z, Cubependium* cp) :
 			cubes[i] = WaterCube(274, cp, i);
 		}
 		
-		pcubes[i] = &cubes[i];
+		
 		//face cubes
 		if (y == 0) {
-			bottom_face_cubes[x+(z*16)] == &cubes[i];
+			bottom_face_cubes[x*16+z] = &cubes[i];
 		}
 		else if (y == 15) {
-			top_face_cubes[x+ (z*16)] == &cubes[i];
+			top_face_cubes[x*16+z] = &cubes[i];
 		}
-		else if (x == 0) {
-			left_face_cubes[y + (z*16)] == &cubes[i];
+		if (x == 0) {
+			left_face_cubes[y*16 + z] = &cubes[i];
 		}
 		else if (x == 15) {
-			right_face_cubes[y + (z*16)] == &cubes[i];
+			right_face_cubes[y*16 + z] = &cubes[i];
 		}
-		else if (z == 0) {
-			front_face_cubes[x + (y*16)] == &cubes[i];
+		if (z == 0) {
+			front_face_cubes[x + y*16] = &cubes[i];
 		}
 		else if (z == 15) {
-			back_face_cubes[x + (y*16)] == &cubes[i];
+			back_face_cubes[x + y*16] = &cubes[i];
 		}
+		pcubes[i] = &cubes[i];
 	};
 
 	setNeighborMap();
@@ -223,7 +222,7 @@ void Chunk::updateNeighbors(Logical_Cube* cube, std::vector<Logical_Cube*> neigh
 
 }
 
-void Chunk::update_pair(Logical_Cube* cube, Logical_Cube* neighbor)
+void Chunk::update_edge_pair(Logical_Cube* cube, Logical_Cube* neighbor, Chunk* chunk, Chunk* neighbor_chunk)
 {
 	int scaler = 8;
 	bool has_difference = false;
@@ -245,7 +244,7 @@ void Chunk::update_pair(Logical_Cube* cube, Logical_Cube* neighbor)
 	//Checks if a cube is hotter and less dense than either the cube above it or the cubes at its sides. If it is, the cube switches values with that cube, making it "rise".
 	//Todo: make this switch compatible with the rendering engine. 
 	//note: in current implementation, during the chunk neighbor pass, it does not check if the neighbor is below the cube.
-	if (has_moved[cube] == false && cube->getState() > 0 && cube->getState() >= neighbor->getState() && cube->getTemperature() > neighbor->getTemperature() && cube->getDensity() <= neighbor->getDensity() && neighbor->isActive()) {
+	if (has_moved[cube] == false && cube->getState() > 0 && cube->getState() >= neighbor->getState() && cube->getTemperature() > neighbor->getTemperature() && cube->getDensity() <= neighbor->getDensity() && neighbor->isActive() && chunk->y_pos <= neighbor_chunk->y_pos) {
 		size_t temp_type = cube->getType();
 		float temp_energy_content = cube->getEnergyContent();
 		cube->setType(neighbor->getType());
