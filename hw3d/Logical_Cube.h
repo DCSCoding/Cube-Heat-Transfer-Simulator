@@ -12,6 +12,8 @@ public:
 	float getDensity();
 	float getEnergyContent();
 	float getEnergyContent(float temp);
+	float getMeltingPoint();
+	float getBoilingPoint();
 	unsigned char getState();
 	short getType();
 	short getIndex();

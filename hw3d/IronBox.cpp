@@ -3,10 +3,10 @@
 #include "GraphicsThrowMacros.h"
 #include "Cube.h"
 #include "ThermoSim.h"
-
+#include "CubeData.h"
 
 IronBox::IronBox(Graphics& gfx, size_t type, float xdis, float ydis, float zdis,
-	Logical_Cube* pcube, float chi1, float theta1, float phi1)
+	Logical_Cube* pcube, float chi1, float theta1, float phi1, CubeData* pCubeData)
 	:
 	box_type(type),
 	x(xdis),
@@ -15,7 +15,8 @@ IronBox::IronBox(Graphics& gfx, size_t type, float xdis, float ydis, float zdis,
 	pc(pcube),
 	chi(chi1),
 	theta(theta1),
-	phi(phi1)
+	phi(phi1),
+	pcd(pCubeData)
 
 {
 	namespace dx = DirectX;
@@ -63,7 +64,7 @@ IronBox::IronBox(Graphics& gfx, size_t type, float xdis, float ydis, float zdis,
 	};
 
 	float temp = 0;
-	float temperature = pc->getTemperature();
+	float temperature = pcd->temperature;
 	if (temperature < 273) {
 		temp = 0;
 	}
@@ -118,7 +119,7 @@ DirectX::XMMATRIX IronBox::GetTransformXM() const noexcept
 
 PixelShaderConstants IronBox::GetPixelShaderConstants() const noexcept {
 
-	float temperature = pc->getTemperature();
+	float temperature = pcd->temperature;
 	float temp = 0;
 	if (temperature < 273) {
 		temp = 0;

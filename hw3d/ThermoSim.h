@@ -16,7 +16,6 @@ public:
 	void update_neighbor_chunks();
 	void set_chunk_neighbors();
 	std::mt19937 rg;
-	/*void update(std::vector<std::vector<std::vector<Logical_Cube*>>> cubes);*/
 private:
 
 };

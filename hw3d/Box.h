@@ -2,12 +2,12 @@
 #include "DrawableBase.h"
 #include "ThermoSim.h"
 #include "PixelShaderConstants.h"
-
+#include "CubeData.h"
 class Box : public DrawableBase<Box>
 {
 public:
 	Box( Graphics& gfx, size_t type, float xdis, float ydis, float zdis,
-		Logical_Cube* pcube, float chi, float theta, float phi);
+		Logical_Cube* pcube, float chi, float theta, float phi, CubeData* pCubeData);
 	void Update( float dt ) noexcept override;
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
 	PixelShaderConstants GetPixelShaderConstants() const noexcept override;
@@ -24,4 +24,5 @@ private:
 	DirectX::XMFLOAT3X3 mt;
 	//ThermoSim reference
 	Logical_Cube* pc;
+	CubeData* pcd;
 };

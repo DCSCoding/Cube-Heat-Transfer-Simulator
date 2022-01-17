@@ -17,13 +17,15 @@ public:
 	Logical_Cube* back_face_cubes[256];
 	Logical_Cube* left_face_cubes[256];
 	Logical_Cube* right_face_cubes[256];
-	std::unordered_map<Logical_Cube*, bool> has_moved;
-	std::unordered_map<Logical_Cube*, std::vector<Logical_Cube*>> neighbor_map;
-	void setNeighborMap();
+	void updateNeighborMap();
 	void setNeighborMap(unsigned char step);
 	void update(unsigned char step);
 	void update();
 	void update_edge_pair(Logical_Cube* cube, Logical_Cube* neighbor, Chunk* chunk, Chunk* neighbor_chunk);
 	void updateNeighbors(Logical_Cube* cube, std::vector<Logical_Cube*> neighbors, std::unordered_map<Logical_Cube*, bool>& has_moved);
 	void checkActive(Logical_Cube* cube, std::vector<Logical_Cube*> neighbors);
+private:
+	std::unordered_map<Logical_Cube*, bool> has_moved;
+	std::unordered_map<Logical_Cube*, std::vector<Logical_Cube*>> neighbor_map;
+	void setNeighborMap();
 };

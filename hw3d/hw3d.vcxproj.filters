@@ -204,6 +204,12 @@
     <ClCompile Include="Chunk.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CubeBuffers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ComputeShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WindowsMessageMap.h">
@@ -264,9 +270,6 @@
       <Filter>Header Files\Bindable</Filter>
     </ClInclude>
     <ClInclude Include="IndexBuffer.h">
-      <Filter>Header Files\Bindable</Filter>
-    </ClInclude>
-    <ClInclude Include="ConstantBuffers.h">
       <Filter>Header Files\Bindable</Filter>
     </ClInclude>
     <ClInclude Include="TransformCbuf.h">
@@ -413,6 +416,18 @@
     <ClInclude Include="Chunk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ConstantBuffers.h">
+      <Filter>Header Files\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="CubeBuffers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CubeData.h">
+      <Filter>Header Files\Cubes</Filter>
+    </ClInclude>
+    <ClInclude Include="ComputeShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="hw3d.rc">
@@ -441,6 +456,7 @@
       <Filter>Dxerr</Filter>
     </None>
     <None Include="imgui.ini" />
+    <None Include="..\x64\Release\ThermoComputeShader.cso" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="ColorBlendPS.hlsl">
@@ -471,6 +487,9 @@
       <Filter>Shader</Filter>
     </FxCompile>
     <FxCompile Include="SolidVS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="ThermoComputeShader.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>

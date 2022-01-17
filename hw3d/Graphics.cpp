@@ -209,6 +209,16 @@ bool Graphics::IsImguiEnabled() const noexcept
 	return imguiEnabled;
 }
 
+Microsoft::WRL::ComPtr<ID3D11DeviceContext> Graphics::getContext()
+{
+	return pContext;
+}
+
+Microsoft::WRL::ComPtr<ID3D11Device> Graphics::getDevice()
+{
+	return pDevice;
+}
+
 const char* Graphics::HrException::what() const noexcept
 {
 	std::ostringstream oss;

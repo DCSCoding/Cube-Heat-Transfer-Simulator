@@ -3,10 +3,10 @@
 #include "GraphicsThrowMacros.h"
 #include "Cube.h"
 #include "ThermoSim.h"
-
+#include "CubeData.h"
 
 Box::Box(Graphics& gfx, size_t type, float xdis, float ydis, float zdis,
-	Logical_Cube* pcube, float chi1, float theta1, float phi1)
+	Logical_Cube* pcube, float chi1, float theta1, float phi1, CubeData* pCubeData)
 	:
 	box_type(type),
 	x(xdis),
@@ -15,8 +15,8 @@ Box::Box(Graphics& gfx, size_t type, float xdis, float ydis, float zdis,
 	pc(pcube),
 	chi(chi1),
 	theta(theta1),
-	phi(phi1)
-
+	phi(phi1),
+	pcd(pCubeData)
 {
 	namespace dx = DirectX;
 
@@ -104,7 +104,7 @@ DirectX::XMMATRIX Box::GetTransformXM() const noexcept
 
 PixelShaderConstants Box::GetPixelShaderConstants() const noexcept {
 	
-	float temp = pc->getTemperature() / 1000.0f;
+	float temp = pcd->temperature / 1000.0f;
 	const PixelShaderConstants cb2 =
 	{
 		{

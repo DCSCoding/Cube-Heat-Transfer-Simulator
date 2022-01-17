@@ -28,7 +28,7 @@ void ThermoSim::update_all(int chunk_index)
 {
 
 	chunks[chunk_index].update();
-	chunks[chunk_index].setNeighborMap();
+	//chunks[chunk_index].updateNeighborMap();
 
 }
 

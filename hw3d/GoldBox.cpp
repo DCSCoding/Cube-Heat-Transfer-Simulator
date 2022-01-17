@@ -6,7 +6,7 @@
 
 
 GoldBox::GoldBox(Graphics& gfx, size_t type, float xdis, float ydis, float zdis,
-	Logical_Cube* pcube, float chi1, float theta1, float phi1)
+	Logical_Cube* pcube, float chi1, float theta1, float phi1, CubeData* pCubeData)
 	:
 	box_type(type),
 	x(xdis),
@@ -15,7 +15,8 @@ GoldBox::GoldBox(Graphics& gfx, size_t type, float xdis, float ydis, float zdis,
 	pc(pcube),
 	chi(chi1),
 	theta(theta1),
-	phi(phi1)
+	phi(phi1),
+	pcd(pCubeData)
 
 {
 	namespace dx = DirectX;
@@ -63,7 +64,7 @@ GoldBox::GoldBox(Graphics& gfx, size_t type, float xdis, float ydis, float zdis,
 	};
 
 
-	float temp = pc->getTemperature() / 1000.0f;
+	float temp = pcd->temperature / 1000.0f;
 
 	const PixelShaderConstants cb2 =
 	{
@@ -112,7 +113,7 @@ DirectX::XMMATRIX GoldBox::GetTransformXM() const noexcept
 
 PixelShaderConstants GoldBox::GetPixelShaderConstants() const noexcept {
 
-	float temp = (pc->getTemperature()-273) / 1000.0f;
+	float temp = (pcd->temperature-273) / 1000.0f;
 	const PixelShaderConstants cb2 =
 	{
 		{

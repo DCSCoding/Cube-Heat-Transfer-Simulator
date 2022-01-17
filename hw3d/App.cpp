@@ -19,10 +19,19 @@
 #include "imgui/imgui_impl_dx11.h"
 #include "Chunk.h"
 #include <future>
+#include "CubeData.h"
+#include "CubeBuffers.h"
+#include "ComputeShader.h"
+#include <iostream>
+
 
 ThermoSim ts;
+const int chunks_width = 1;
 long duration = 0;
 float average = 0;
+CubeData big_chunkus[4096 * chunks_width * chunks_width * chunks_width];
+ComputeShader* pComputeShader = NULL;
+CubeData results[4096 * chunks_width * chunks_width * chunks_width];
 
 App::App()
 	:
@@ -72,35 +81,60 @@ App::App()
 		std::uniform_int_distribution<int> longdist{ 10,40 };
 		std::uniform_int_distribution<int> typedist{ 0,2 };
 	};
-
+	
 	Factory f(wnd.Gfx());
-	for (int i = 0; i < 1; i++) {
-		ts.addChunk(0, i, 0);
+	for (int x = 0; x < chunks_width; x++) {
+		for(int y = 0; y < chunks_width; y++) {
+			for(int z = 0; z < chunks_width; z++) {
+				ts.addChunk(x, y, z);
+			}
+		}
+		
 	}
-	ts.addChunk(1, 0, 0);
+	//ts.addChunk(1, 0, 0);
 	
-	
-	//ts.addChunk(0, 0, 1B
 	/*drawables.reserve( nDrawables );
 	std::generate_n( std::back_inserter( drawables ),nDrawables,f );*/
-
-	for (Chunk c : ts.chunks) {
-		for (Logical_Cube* cube : c.pcubes) {
-			size_t id = cube->getType();
+	
+	for (Chunk& c : ts.chunks) {
+		for (Logical_Cube* pcube : c.pcubes) {
+			size_t id = pcube->getType();
 			int offx = (c.x_pos) * 16;
 			int offy = (c.y_pos) * 16;
 			int offz = (c.z_pos) * 16;
-			float x = int((cube->getIndex() / 256)) + offx;
-			float y = int(((cube->getIndex() / 16) % 16)) + offy;
-			float z = int(((cube->getIndex() % 16))) + offz;
+			float x = int((pcube->getIndex() / 256)) + offx;
+			float y = int(((pcube->getIndex() / 16) % 16)) + offy;
+			float z = int(((pcube->getIndex() % 16))) + offz;
+			int x_int = int((pcube->getIndex() / 256)) + offx;
+			int y_int = int(((pcube->getIndex() / 16) % 16)) + offy;
+			int z_int = int(((pcube->getIndex() % 16))) + offz;
+			int sanity_check = (x_int * pow((chunks_width * 16), 2)) + (y_int * (16 * chunks_width)) + z_int;
+			big_chunkus[sanity_check] = {
+				pcube->getTemperature(),
+				pcube->getEnergyContent(),
+				pcube->getMass() / pcube->getDensity(),
+				pcube->getDensity(),
+				pcube->getMass(),
+				pcube->getMass()*pcube->getSpecificHeat(),
+				pcube->getConductivity(),
+				pcube->getSpecificHeat(),
+				pcube->getMeltingPoint(),
+				pcube->getBoilingPoint(),
+				0,
+				x,
+				y,
+				z,
+				(chunks_width * 16) ^ 2,
+				16 * chunks_width
+			};
 			
 
 			switch (id) {
 			case 1:
-				drawables.emplace_back(std::make_unique<GoldBox>(wnd.Gfx(), id, x, y, z, cube, 0.0f, 0.0f, 0.0f));
+				drawables.emplace_back(std::make_unique<GoldBox>(wnd.Gfx(), id, x, y, z, pcube, 0.0f, 0.0f, 0.0f, &big_chunkus[pcube->getIndex()]));
 				break;
 			case 2:
-				drawables.emplace_back(std::make_unique<IronBox>(wnd.Gfx(), id, x, y, z, cube, 0.0f, 0.0f, 0.0f));
+				drawables.emplace_back(std::make_unique<IronBox>(wnd.Gfx(), id, x, y, z, pcube, 0.0f, 0.0f, 0.0f, &big_chunkus[pcube->getIndex()]));
 				break;
 			case 3:
 				//drawables.push_back(std::make_unique<InsulatorBox>(wnd.Gfx(), id, x, y, z, cube, 0.0f, 0.0f, 0.0f));
@@ -109,9 +143,10 @@ App::App()
 				//drawables.push_back(std::make_unique<NonStaticBox>(wnd.Gfx(), id, x, y, z, cube, 0.0f, 0.0f, 0.0f));
 				break;
 			case 6:
-				drawables.emplace_back(std::make_unique<WaterBox>(wnd.Gfx(), id, x, y, z, cube, 0.0f, 0.0f, 0.0f));
+				drawables.emplace_back(std::make_unique<WaterBox>(wnd.Gfx(), id, x, y, z, pcube, 0.0f, 0.0f, 0.0f, &big_chunkus[pcube->getIndex()]));
 			}
 		}
+		
 	}
 	/*for (int x = 0; x < ts.width; x++) {
 		for (int y = 0; y < ts.length; y++) {
@@ -142,9 +177,9 @@ App::App()
 			}
 		}
 	}*/
-
-	// auto s = Surface::FromFile("Images\kappa50.png");
-
+	
+	
+	std::cout << big_chunkus[0].boiling_point;
 	wnd.Gfx().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 9.0f / 16.0f, 0.5f, 80.0f));
 	
 }
@@ -197,19 +232,35 @@ int App::Go()
 	}
 	std::shuffle(&steps[0], &steps[64], rg);
 	std::vector<std::future<void>> update_futures;
+	
 	while (true)
 	{
 		// process all messages pending, but to not block for new messages
 		if (const auto ecode = Window::ProcessMessages())
 		{
 			// if return optional has value, means we're quitting so return exit code
+
 			return *ecode;
 		}
 		DoFrame(framecount);
+
+		CubeBuffers cube_buffer;
+		if (cube_buffer.createInputBuffer(wnd.Gfx(), big_chunkus, sizeof(big_chunkus))) {
+			if (cube_buffer.createOutputBuffer(wnd.Gfx(), big_chunkus, sizeof(big_chunkus))) {
+				std::shared_ptr<ComputeShader> pComputeShader(new ComputeShader(wnd.Gfx(), L"ThermoComputeShader.cso", cube_buffer.m_srcDataGPUBufferView, cube_buffer.m_destDataGPUBufferView));
+				pComputeShader->run(wnd.Gfx(), chunks_width);
+
+			}
+		}
+		
+		cube_buffer.getResults(wnd.Gfx(), big_chunkus, sizeof(big_chunkus));
+		
+		//pComputeShader->run(wnd.Gfx());
+
 		
 		
-		framecount++;
-		if (framecount == 63) {
+		/*framecount++;
+		
 			if (update_futures.size() > 1) {
 				for (auto& f : update_futures) {
 					f.wait();
@@ -222,13 +273,14 @@ int App::Go()
 				//update_futures.push_back(std::async(std::launch::async, &ThermoSim::update, &ts, steps[framecount], chunk_index));
 				update_futures.push_back(std::async(std::launch::async, &ThermoSim::update_all, &ts, chunk_index));
 			}
+			
 			auto t2 = std::chrono::high_resolution_clock::now();
 			duration += std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count();
 			average = duration / 64;
 			duration = 0;
 			framecount = 0;
 			std::shuffle(&steps[0], &steps[64], rg);
-		}
+		*/
 	}
 }
 
@@ -261,6 +313,7 @@ void App::CubeMenu() {
 				}
 			}
 		}
+
 		
 	};
 	ImGui::End();

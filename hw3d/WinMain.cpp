@@ -20,6 +20,10 @@
 #include "App.h"
 #include <random>
 #include <chrono>
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+
 std::mt19937 random;
 int CALLBACK WinMain(
 	HINSTANCE hInstance,
@@ -30,6 +34,7 @@ int CALLBACK WinMain(
 	random.seed(time(0));
 	try
 	{
+		_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 		return App{}.Go();
 	}
 	catch( const ChiliException& e )
@@ -44,5 +49,6 @@ int CALLBACK WinMain(
 	{
 		MessageBox( nullptr,"No details available","Unknown Exception",MB_OK | MB_ICONEXCLAMATION );
 	}
+	_CrtDumpMemoryLeaks();
 	return -1;
 }

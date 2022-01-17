@@ -7,7 +7,8 @@ public:
 		 short type_id;
 		 float volume;
 		 float density;
-		 float mass = density * volume;
+		 float mass;
+		 float mass_specific_heat;
 		 float conductivity;
 		 float specific_heat;
 		 float melting_point;
@@ -17,7 +18,8 @@ public:
 		 0,
 		 1000000.0f,
 		 1.0f,
-		 1000000.0f * 1.0f,
+		 1000000.0f,
+		 1000000.0f,
 		 100.0f,
 		 1.0f,
 		 1000.0f,
@@ -28,6 +30,7 @@ public:
 		 1000000.0f,
 		 19.3f,
 		 1000000.0f * 19.3,
+		 1000000.0f * 19.3 * .129,
 		 314.0f,
 		 .129,
 		 1064.0f + 273.0f,
@@ -38,6 +41,7 @@ public:
 		 1000000.0f,
 		 7.9f,
 		 1000000.0f * 7.9f,
+		 1000000.0f * 7.9f * .45,
 		 79.5f,
 		 .45f,
 		 1538.0f + 273.0f,
@@ -48,6 +52,7 @@ public:
 		 1000000.0f,
 		 19.3f,
 		 1000000.0f * 19.3,
+		 1000000.0f * 19.3 * 0.0f,
 		 0.0f,
 		 100.0f,
 		 10000.0f,
@@ -57,6 +62,7 @@ public:
 		 4,
 		 1000000.0f,
 		 .0013f,
+		 1000000.0f * .0013,
 		 1000000.0f * .0013,
 		 .024f,
 		 1.0f,
@@ -71,6 +77,7 @@ public:
 		 0,
 		 0,
 		 0,
+		 0,
 		 0
 	};
 	Cube_Data wc{
@@ -78,6 +85,7 @@ public:
 		 1000000.0f,
 		 1.0,
 		 1000000.0f,
+		 1000000.0f * 4.2,
 		 2.0f,
 		 4.2f,
 		 273.0f,

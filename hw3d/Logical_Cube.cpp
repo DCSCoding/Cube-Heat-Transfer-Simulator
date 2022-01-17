@@ -53,6 +53,15 @@ float  Logical_Cube::getEnergyContent(float temp) {
 	return cp->getTypeData(id).mass * cp->getTypeData(id).specific_heat * temp;
 	}
 
+float Logical_Cube::getMeltingPoint()
+{
+	return cp->getTypeData(id).melting_point;
+}
+
+float Logical_Cube::getBoilingPoint() {
+	return cp->getTypeData(id).boiling_point;
+}
+
 short Logical_Cube::getType()
 {
 	return id;
@@ -80,7 +89,7 @@ void Logical_Cube::setActive(bool activity_flag)
 
 void Logical_Cube::updateTemperature()
 {
-	temperature = energy_content / cp->getTypeData(id).mass / cp->getTypeData(id).specific_heat;
+	temperature = energy_content / cp->getTypeData(id).mass_specific_heat;
 }
 unsigned char Logical_Cube::getState() {
 	return state;

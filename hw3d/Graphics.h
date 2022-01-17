@@ -65,6 +65,8 @@ public:
 	void EnableImgui() noexcept;
 	void DisableImgui() noexcept;
 	bool IsImguiEnabled() const noexcept;
+	Microsoft::WRL::ComPtr<ID3D11DeviceContext> getContext();
+	Microsoft::WRL::ComPtr<ID3D11Device> getDevice();
 private:
 	bool imguiEnabled = true;
 	DirectX::XMMATRIX projection;

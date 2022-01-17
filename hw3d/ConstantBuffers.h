@@ -77,3 +77,18 @@ public:
 		GetContext( gfx )->PSSetConstantBuffers( 0u,1u,pConstantBuffer.GetAddressOf() );
 	}
 };
+
+/* I don't think compute shaders actually use constant buffers... or they might, but it doesn't seem to be the best way.
+
+template <typename C>
+class ComputeConstantBuffer : public ConstantBuffer<C>
+{
+	using ConstantBuffer<C>::pConstantBuffer;
+	using Bindable::GetContext;
+public:
+	using ConstantBuffer<C>::ConstantBuffer;
+	void Bind(Graphics& gfx) noexcept override
+	{
+		GetContext(gfx)->CSSetConstantBuffers(0u, 1u, pConstantBuffer.GetAddressOf());
+	}
+};*/

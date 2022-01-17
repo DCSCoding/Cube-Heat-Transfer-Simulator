@@ -4,6 +4,7 @@
 #include "AirCube.h"
 #include <random>
 #include <chrono>
+#include <iostream>
 
 //long allocated_mem = 0;
 //void* operator new(size_t size) {
@@ -28,11 +29,13 @@ Chunk::Chunk(int x, int y, int z, Cubependium* cp, std::mt19937& rand) :
 		int y = (i / 16) % 16;
 		int z = i % 16;
 
-		if (y < 3) {
-			cubes[i] = WaterCube(random_int(rg), cp, i);
+		if (y == 0 && x == 0 && z == 0) {
+			cubes[i] = GoldCube(2000, cp, i);
 		}
-		else {
-			cubes[i] = WaterCube(274, cp, i);
+		else if (y == 15) {
+			cubes[i] = GoldCube(500, cp, i);
+		}else {
+			cubes[i] = WaterCube(100, cp, i);
 		}
 		
 		
@@ -55,17 +58,17 @@ Chunk::Chunk(int x, int y, int z, Cubependium* cp, std::mt19937& rand) :
 		else if (z == 15) {
 			back_face_cubes[x + y*16] = &cubes[i];
 		}
+
 		pcubes[i] = &cubes[i];
 	};
 
+	
 	setNeighborMap();
 	
 }
 
 void Chunk::setNeighborMap()
 {
-	std::default_random_engine rg(time(0));
-	std::mt19937 g(rg());
 
 	for (short i = 0; i < 4096; i++) {
 		int x = i / 256;
@@ -75,7 +78,7 @@ void Chunk::setNeighborMap()
 		//first adds the top cube to the neighbor list.
 		if (y + 1 < 16) neighbors.emplace_back(pcubes[i + 16]);
 		//adds the laterally adjacent cubes to the neighbor list.
-		if (x + 1 < 16) neighbors.emplace_back(pcubes[i + 256]);
+		if (x + 1 < 16) neighbors.emplace_back(pcubes[i + 256]);	
 		if (z + 1 < 16) neighbors.emplace_back(pcubes[i + 1]);
 		if (x - 1 >= 0) neighbors.emplace_back(pcubes[i - 256]);
 		if (z - 1 >= 0) neighbors.emplace_back(pcubes[i - 1]);
@@ -83,18 +86,47 @@ void Chunk::setNeighborMap()
 		if (y - 1 >= 0) neighbors.emplace_back(pcubes[i - 16]);
 
 		//Shuffling the neighbor order
-		if (i + 16 < 4096 && i - 16 >= 0) {
+		/*if (y+1 < 15 && y-1 >= 0) {
 			//If there is a top and bottom neighbor, shuffles positions 1-4 (lateral neighbors)
-			std::shuffle(neighbors.begin() + 1, neighbors.end() - 1, g);
+			std::shuffle(neighbors.begin() + 1, neighbors.end() - 1, rg);
 		}
-		else if (i + 16 > 4096) {
+		else if (y+1 > 15) {
 			//If there is no top cube, shuffle from 0-4
-			std::shuffle(neighbors.begin(), neighbors.end() - 1, g);
+			std::shuffle(neighbors.begin(), neighbors.end() - 1, rg);
 		}
+		else {
+			std::shuffle(neighbors.begin()+1, neighbors.end(), rg);
+		}*/
+		
 
 		neighbor_map[pcubes[i]] = neighbors;
 
 	}
+
+};
+
+void Chunk::updateNeighborMap()
+{
+
+	for (int i = 0; i < 4096; i++) {
+		int x = i / 256;
+		int y = (i / 16) % 16;
+		int z = i % 16;
+
+		if (y + 1 < 15 && y - 1 >= 0) {
+			//If there is a top and bottom neighbor, shuffles positions 1-4 (lateral neighbors)
+			std::shuffle(neighbor_map.at(pcubes[i]).begin()+1, neighbor_map.at(pcubes[i]).end()-1, rg);
+		}
+		else if (y + 1 > 15) {
+			//If there is no top cube, shuffle from 0-4
+			std::shuffle(neighbor_map.at(pcubes[i]).begin(), neighbor_map.at(pcubes[i]).end() - 1, rg);
+		}
+		else {
+			std::shuffle(neighbor_map.at(pcubes[i]).begin()+1, neighbor_map.at(pcubes[i]).end(), rg);
+		}
+
+	}
+
 };
 
 
@@ -158,11 +190,10 @@ void Chunk::setNeighborMap()
 void Chunk::update()
 {
 
+	std::cout << "bigguns";
 	for (short i = 0; i < 4096; i++) {
-	
-		if (i == 3839) {
-			i = 3839;
-		}
+		
+		
 		if (pcubes[i]->isActive()) {
 			updateNeighbors(pcubes[i], neighbor_map[pcubes[i]], has_moved);
 		}
